@@ -31,11 +31,11 @@ function ExpenseList({ listId }: ExpenseListProps) {
   if (!user) return null;
 
   const groupedExpenses = expenses.reduce((prev, next) => {
-    const prevExpenses = prev[next.user] ?? [];
+    const prevExpenses = prev[next.user.uid] ?? [];
 
     return {
       ...prev,
-      [next.user]: [...prevExpenses, next]
+      [next.user.uid]: [...prevExpenses, next]
     };
   }, {} as Record<string, Expense[]>);
 
@@ -100,7 +100,7 @@ function ExpenseList({ listId }: ExpenseListProps) {
                 {expense.name}
               </Heading>
               <Text as="span" fontSize="xs" color="gray.500">
-                {expense.user}
+                {expense.user.displayName}
               </Text>
             </Flex>
 

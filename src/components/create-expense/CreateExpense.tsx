@@ -38,7 +38,11 @@ function CreateExpense() {
     await ref.collection("expenses").add({
       name,
       expense,
-      user: user.uid,
+      user: {
+        uid: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL
+      },
       createdOn: Date.now()
     });
 
