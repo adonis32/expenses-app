@@ -9,7 +9,7 @@ function Lists() {
   return (
     <Box>
       {lists.map(list => (
-        <Link key={list.__ref.id} to={`/lists/${list.__ref.id}`}>
+        <Link key={list.__ref.id} to={`/list/${list.__ref.id}`}>
           <Box p={4} cursor="pointer">
             <Heading as="h2" size="sm">
               {list.name}
