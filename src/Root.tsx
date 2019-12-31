@@ -3,16 +3,20 @@ import { createPack } from "react-component-pack";
 import AuthProvider from "./context/auth";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider, CSSReset } from "@chakra-ui/core";
 
 const ProviderPack = createPack(AuthProvider);
 
 function Root() {
   return (
-    <BrowserRouter>
-      <ProviderPack>
-        <App />
-      </ProviderPack>
-    </BrowserRouter>
+    <ThemeProvider>
+      <CSSReset />
+      <BrowserRouter>
+        <ProviderPack>
+          <App />
+        </ProviderPack>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

@@ -21,23 +21,17 @@ cd ./src/components/$PARENT_COMPONENT_DIR
 mkdir $COMPONENT_NAME_KEBABCASE
 cd $COMPONENT_NAME_KEBABCASE
 
-touch $COMPONENT_NAME.tsx $COMPONENT_NAME.module.scss index.tsx
+touch $COMPONENT_NAME.tsx index.tsx
 
 COMPONENT_TEMPLATE="import React from 'react';
-import styles from './$COMPONENT_NAME.module.scss';
 
 function $COMPONENT_NAME() {
   return (
-    <div className={styles.$COMPONENT_NAME_CAMELCASE}>$COMPONENT_NAME</div>
+    <div>$COMPONENT_NAME</div>
   );
 }
 
 export default $COMPONENT_NAME;
-"
-
-SCSS_MODULE_TEMPLATE=".$COMPONENT_NAME_KEBABCASE {
-  display: block;
-}
 "
 
 INDEX_TEMPLATE="export { default } from './$COMPONENT_NAME';
@@ -45,7 +39,6 @@ export * from './$COMPONENT_NAME';
 "
 
 echo "$COMPONENT_TEMPLATE" > $COMPONENT_NAME.tsx
-echo "$SCSS_MODULE_TEMPLATE" > $COMPONENT_NAME.module.scss
 echo "$INDEX_TEMPLATE" > index.tsx
 
 cd ../../../../

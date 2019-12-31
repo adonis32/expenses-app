@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./LoginScreen.module.scss";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/app";
 
@@ -12,9 +11,7 @@ const uiConfig: firebaseui.auth.Config = {
 
 function LoginScreen() {
   return (
-    <div className={styles.loginScreen}>
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-    </div>
+    <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
   );
 }
 
