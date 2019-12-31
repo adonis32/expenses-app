@@ -4,6 +4,7 @@ import Lists from "../lists";
 import ExpenseLog from "../expense-log";
 import ListProvider from "../../context/list";
 import CreateExpense from "../create-expense";
+import CreateList from "../create-list";
 
 function LoggedInRoutes() {
   return (
@@ -11,6 +12,10 @@ function LoggedInRoutes() {
       <Switch>
         <Route exact path="/">
           <Lists />
+        </Route>
+
+        <Route exact path="/list/create">
+          <CreateList />
         </Route>
 
         <Route path="/list/:listId/create">
