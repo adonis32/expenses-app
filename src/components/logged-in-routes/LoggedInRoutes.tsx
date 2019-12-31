@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import Lists from "../lists";
 import ExpenseLog from "../expense-log";
 import ListProvider from "../../context/list";
+import CreateExpense from "../create-expense";
 
 function LoggedInRoutes() {
   return (
@@ -10,6 +11,10 @@ function LoggedInRoutes() {
       <Switch>
         <Route exact path="/">
           <Lists />
+        </Route>
+
+        <Route path="/list/:listId/create">
+          <CreateExpense />
         </Route>
 
         <Route path="/list/:listId">

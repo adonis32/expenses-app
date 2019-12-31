@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import ExpenseProvider, { useExpense, Expense } from "../../context/expense";
 import { Box, Heading, Text, Flex, IconButton } from "@chakra-ui/core";
 import { useListById } from "../../context/list";
@@ -26,6 +26,7 @@ function ExpenseList({ listId }: ExpenseListProps) {
   const { user } = useAuth();
   const { expenses } = useExpense();
   const list = useListById(listId);
+  const history = useHistory();
 
   if (!user) return null;
 
@@ -64,18 +65,31 @@ function ExpenseList({ listId }: ExpenseListProps) {
   return (
     <Flex height="100%" flexDirection="column">
       <Flex
-        justifyContent="space-between"
         alignItems="center"
         borderBottomColor="gray.200"
         borderBottomWidth={1}
       >
-        <Flex p={4} flexDirection="column" justifyContent="center">
+        <IconButton
+          aria-label="Close"
+          icon="close"
+          ml={1}
+          backgroundColor="transparent"
+          onClick={() => history.goBack()}
+        />
+
+        <Flex py={4} px={2} alignItems="center">
           <Heading as="h2" size="sm">
             {list?.name}
           </Heading>
         </Flex>
 
-        <IconButton aria-label="Add expense" icon="add" mr={2} />
+        <IconButton
+          ml="auto"
+          aria-label="Add expense"
+          icon="add"
+          mr={2}
+          onClick={() => history.push(`/list/${listId}/create`)}
+        />
       </Flex>
 
       <Box flex="1" overflowY="scroll">
