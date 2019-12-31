@@ -85,8 +85,17 @@ function ExpenseList({ listId }: ExpenseListProps) {
 
         <IconButton
           ml="auto"
+          aria-label="Manage members"
+          icon="at-sign"
+          variant="ghost"
+          mr={2}
+          onClick={() => history.push(`/list/${listId}/manage`)}
+        />
+
+        <IconButton
           aria-label="Add expense"
           icon="add"
+          variantColor="blue"
           mr={2}
           onClick={() => history.push(`/list/${listId}/create`)}
         />
