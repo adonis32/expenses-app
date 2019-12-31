@@ -21,7 +21,7 @@ cd ./src/components/$PARENT_COMPONENT_DIR
 mkdir $COMPONENT_NAME_KEBABCASE
 cd $COMPONENT_NAME_KEBABCASE
 
-touch $COMPONENT_NAME.tsx $COMPONENT_NAME.module.scss $COMPONENT_NAME.stories.tsx index.tsx
+touch $COMPONENT_NAME.tsx $COMPONENT_NAME.module.scss index.tsx
 
 COMPONENT_TEMPLATE="import React from 'react';
 import styles from './$COMPONENT_NAME.module.scss';
@@ -44,18 +44,8 @@ INDEX_TEMPLATE="export { default } from './$COMPONENT_NAME';
 export * from './$COMPONENT_NAME';
 "
 
-STORY_TEMPLATE="import React from 'react';
-import '@/styles/global.scss';
-import $COMPONENT_NAME from '.';
-
-export default { title: '$COMPONENT_NAME' };
-
-export const Default$COMPONENT_NAME= () => <$COMPONENT_NAME />;
-"
-
 echo "$COMPONENT_TEMPLATE" > $COMPONENT_NAME.tsx
 echo "$SCSS_MODULE_TEMPLATE" > $COMPONENT_NAME.module.scss
 echo "$INDEX_TEMPLATE" > index.tsx
-echo "$STORY_TEMPLATE" > $COMPONENT_NAME.stories.tsx
 
 cd ../../../../
