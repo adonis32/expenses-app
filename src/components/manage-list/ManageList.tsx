@@ -13,6 +13,16 @@ import { useListById, List, useIsListAdmin } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import nanoid from "nanoid";
 import ProfileName from "../profile-name";
+import firebase from "firebase/app";
+
+type DeleteListFunction = (params: {
+  id: string;
+}) => Promise<firebase.functions.HttpsCallableResult>;
+
+const deleteListFunction: DeleteListFunction = firebase
+  .app()
+  .functions("europe-west1")
+  .httpsCallable("deleteList");
 
 function ManageList() {
   const match = useRouteMatch<{ listId: string }>();
@@ -21,8 +31,9 @@ function ManageList() {
   const list = useListById(listId);
   const isAdmin = useIsListAdmin(listId);
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
   const [partial, setPartial] = useState<Partial<List>>({});
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const updateList = useCallback(async () => {
     if (!list || !user) {
@@ -31,11 +42,11 @@ function ManageList() {
 
     const ref = list.__ref;
 
-    setLoading(true);
+    setSaveLoading(true);
 
     await ref.update(partial);
 
-    setLoading(false);
+    setSaveLoading(false);
 
     history.goBack();
   }, [list, user, history, partial]);
@@ -65,6 +76,28 @@ function ManageList() {
       prompt("Send this link to the people you wanna invite", url);
     }
   }, [list]);
+
+  async function deleteList() {
+    if (!list) {
+      return;
+    }
+
+    setDeleteLoading(true);
+
+    const confirmed = window.confirm(
+      "Are you sure? The list will be deleted permanently"
+    );
+
+    if (!confirmed) {
+      setDeleteLoading(false);
+      return;
+    }
+
+    await deleteListFunction({ id: list.__ref.id });
+
+    history.replace("/");
+    setDeleteLoading(false);
+  }
 
   if (!list) {
     return null;
@@ -102,8 +135,8 @@ function ManageList() {
           variantColor="blue"
           mr={2}
           onClick={updateList}
-          isLoading={loading}
-          isDisabled={loading}
+          isLoading={saveLoading}
+          isDisabled={saveLoading}
         />
       </Flex>
 
@@ -112,6 +145,19 @@ function ManageList() {
         onChange={setPartial}
         shareInviteLink={shareInviteLink}
       />
+
+      <Box p={4}>
+        <Button
+          variant="ghost"
+          variantColor="red"
+          width="100%"
+          isLoading={deleteLoading}
+          isDisabled={deleteLoading}
+          onClick={deleteList}
+        >
+          Delete list
+        </Button>
+      </Box>
     </div>
   );
 }

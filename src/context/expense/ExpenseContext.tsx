@@ -44,6 +44,7 @@ function ExpenseProvider({ children, listId }: ExpenseProviderProps) {
     const unsubscribe = firebase
       .firestore()
       .collection(`lists/${listId}/expenses`)
+      .orderBy("createdOn", "desc")
       .onSnapshot(snapshot => {
         if (unmounted) return;
 

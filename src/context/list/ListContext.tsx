@@ -9,6 +9,7 @@ export interface List {
     admin: string;
   };
   code: string;
+  deleting?: boolean;
   __ref: firebase.firestore.DocumentReference;
 }
 
@@ -43,6 +44,7 @@ function ListProvider({ children }: ListProviderProps) {
       .firestore()
       .collection("lists")
       .where("users", "array-contains", user.uid)
+      .orderBy("createdOn", "desc")
       .onSnapshot(snapshot => {
         if (unmounted) return;
 
@@ -65,7 +67,11 @@ function ListProvider({ children }: ListProviderProps) {
   }, [user]);
 
   return (
-    <ListContext.Provider value={{ lists }}>{children}</ListContext.Provider>
+    <ListContext.Provider
+      value={{ lists: lists.filter(list => !list.deleting) }}
+    >
+      {children}
+    </ListContext.Provider>
   );
 }
 

@@ -8,11 +8,16 @@ import CreateList from "../create-list";
 import ManageList from "../manage-list";
 import JoinList from "../join-list";
 import ProfileProvider from "../../context/profile";
+import DeletingListRedirect from "../deleting-list-redirect";
 
 function LoggedInRoutes() {
   return (
     <ProfileProvider>
       <ListProvider>
+        <Route path="/list/:listId">
+          <DeletingListRedirect />
+        </Route>
+
         <Switch>
           <Route exact path="/">
             <Lists />
