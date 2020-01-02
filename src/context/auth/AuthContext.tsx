@@ -24,6 +24,16 @@ function AuthProvider({ children }: AuthProviderProps) {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (unmounted) return;
       setUser(user);
+
+      if (user) {
+        firebase
+          .firestore()
+          .doc(`profiles/${user.uid}`)
+          .set({
+            name: user.displayName,
+            photoURL: user.photoURL
+          });
+      }
     });
 
     return () => {
