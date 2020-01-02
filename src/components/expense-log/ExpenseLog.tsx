@@ -2,7 +2,7 @@ import React from "react";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import ExpenseProvider, { useExpense, Expense } from "../../context/expense";
 import { Box, Heading, Text, Flex, IconButton } from "@chakra-ui/core";
-import { useListById } from "../../context/list";
+import { useListById, useIsListAdmin } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import ProfileName from "../profile-name";
 
@@ -27,6 +27,7 @@ function ExpenseList({ listId }: ExpenseListProps) {
   const { user } = useAuth();
   const { expenses } = useExpense();
   const list = useListById(listId);
+  const isAdmin = useIsListAdmin(listId);
   const history = useHistory();
 
   if (!user) return null;
@@ -84,22 +85,25 @@ function ExpenseList({ listId }: ExpenseListProps) {
           </Heading>
         </Flex>
 
-        <IconButton
-          ml="auto"
-          aria-label="Manage members"
-          icon="at-sign"
-          variant="ghost"
-          mr={2}
-          onClick={() => history.push(`/list/${listId}/manage`)}
-        />
+        <Flex ml="auto">
+          {isAdmin && (
+            <IconButton
+              aria-label="Manage list"
+              icon="at-sign"
+              variant="ghost"
+              mr={2}
+              onClick={() => history.push(`/list/${listId}/manage`)}
+            />
+          )}
 
-        <IconButton
-          aria-label="Add expense"
-          icon="add"
-          variantColor="blue"
-          mr={2}
-          onClick={() => history.push(`/list/${listId}/create`)}
-        />
+          <IconButton
+            aria-label="Add expense"
+            icon="add"
+            variantColor="blue"
+            mr={2}
+            onClick={() => history.push(`/list/${listId}/create`)}
+          />
+        </Flex>
       </Flex>
 
       <Box flex="1" overflowY="scroll">

@@ -8,8 +8,8 @@ import {
   Input,
   Button
 } from "@chakra-ui/core";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import { useListById, List } from "../../context/list";
+import { useHistory, useRouteMatch, Redirect } from "react-router-dom";
+import { useListById, List, useIsListAdmin } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import nanoid from "nanoid";
 import ProfileName from "../profile-name";
@@ -19,6 +19,7 @@ function ManageList() {
   const { listId } = match.params;
   const history = useHistory();
   const list = useListById(listId);
+  const isAdmin = useIsListAdmin(listId);
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [partial, setPartial] = useState<Partial<List>>({});
@@ -67,6 +68,10 @@ function ManageList() {
 
   if (!list) {
     return null;
+  }
+
+  if (!isAdmin) {
+    return <Redirect to={`/list/${listId}`} />;
   }
 
   return (
