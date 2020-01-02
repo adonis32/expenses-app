@@ -61,7 +61,7 @@ function ManageList() {
 
     await ref.update({ code });
 
-    const url = `${process.env.PUBLIC_URL}/list/join?id=${ref.id}&code=${code}`;
+    const url = `${window.location.origin}/list/join?id=${ref.id}&code=${code}`;
 
     if (navigator.share) {
       await navigator.share({
