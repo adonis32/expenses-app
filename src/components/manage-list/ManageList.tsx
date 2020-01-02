@@ -1,8 +1,17 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Flex, IconButton, Heading, Box, Text, Input } from "@chakra-ui/core";
+import {
+  Flex,
+  IconButton,
+  Heading,
+  Box,
+  Text,
+  Input,
+  Button
+} from "@chakra-ui/core";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useListById, List } from "../../context/list";
 import { useAuth } from "../../context/auth";
+import nanoid from "nanoid";
 
 function ManageList() {
   const match = useRouteMatch<{ listId: string }>();
@@ -28,6 +37,32 @@ function ManageList() {
 
     history.goBack();
   }, [list, user, history, partial]);
+
+  const shareInviteLink = useCallback(async () => {
+    if (!list) {
+      return;
+    }
+
+    const code = nanoid();
+    const ref = list.__ref;
+
+    await ref.update({ code });
+
+    const url = `${process.env.PUBLIC_URL}/list/join?id=${ref.id}&code=${code}`;
+
+    if (navigator.share) {
+      await navigator.share({
+        text: `Join ${list.name} at ExpensesApp!`,
+        url
+      });
+    } else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(url);
+
+      alert("Link copied to your clipboard!");
+    } else {
+      prompt("Send this link to the people you wanna invite", url);
+    }
+  }, [list]);
 
   if (!list) {
     return null;
@@ -66,7 +101,11 @@ function ManageList() {
         />
       </Flex>
 
-      <ManageListForm list={list} onChange={setPartial} />
+      <ManageListForm
+        list={list}
+        onChange={setPartial}
+        shareInviteLink={shareInviteLink}
+      />
     </div>
   );
 }
@@ -76,12 +115,18 @@ export default ManageList;
 interface ManageListFormProps {
   list: List;
   onChange: (partial: Partial<List>) => void;
+  shareInviteLink: () => Promise<void>;
 }
 
-function ManageListForm({ list, onChange }: ManageListFormProps) {
+function ManageListForm({
+  list,
+  onChange,
+  shareInviteLink
+}: ManageListFormProps) {
   const [name, setName] = useState(list.name);
-  const [users, setUsers] = useState<string[]>(list.users);
+  const [users] = useState<string[]>(list.users);
   const { user } = useAuth();
+  const [shareLoading, setShareLoading] = useState(false);
 
   useEffect(() => {
     onChange({
@@ -89,6 +134,14 @@ function ManageListForm({ list, onChange }: ManageListFormProps) {
       users
     });
   }, [name, users, onChange]);
+
+  async function onSendInviteLinkClick() {
+    setShareLoading(true);
+
+    await shareInviteLink();
+
+    setShareLoading(false);
+  }
 
   return (
     <>
@@ -107,6 +160,18 @@ function ManageListForm({ list, onChange }: ManageListFormProps) {
         />
       </Box>
 
+      <Box px={4}>
+        <Button
+          leftIcon="link"
+          onClick={onSendInviteLinkClick}
+          width="100%"
+          isLoading={shareLoading}
+          isDisabled={shareLoading}
+        >
+          Create and send invite link
+        </Button>
+      </Box>
+
       {users.map(userId => (
         <Box key={userId} p={4}>
           <Heading as="h4" size="sm">
@@ -114,19 +179,6 @@ function ManageListForm({ list, onChange }: ManageListFormProps) {
           </Heading>
         </Box>
       ))}
-
-      <Box p={4}>
-        <Text as="label" fontWeight="bold">
-          Add user:
-        </Text>
-
-        <Input
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setUsers(current => [...current, e.target.value])
-          }
-          placeholder="User ID"
-        />
-      </Box>
     </>
   );
 }

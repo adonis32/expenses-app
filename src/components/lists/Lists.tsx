@@ -14,15 +14,7 @@ function Lists() {
         borderBottomColor="gray.200"
         borderBottomWidth={1}
       >
-        <IconButton
-          aria-label="Close"
-          icon="close"
-          ml={1}
-          backgroundColor="transparent"
-          onClick={() => history.goBack()}
-        />
-
-        <Flex py={4} px={2} alignItems="center">
+        <Flex py={4} px={4} alignItems="center">
           <Heading as="h2" size="sm">
             Lists
           </Heading>
