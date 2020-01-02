@@ -12,6 +12,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import { useListById, List } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import nanoid from "nanoid";
+import ProfileName from "../profile-name";
 
 function ManageList() {
   const match = useRouteMatch<{ listId: string }>();
@@ -175,7 +176,7 @@ function ManageListForm({
       {users.map(userId => (
         <Box key={userId} p={4}>
           <Heading as="h4" size="sm">
-            {userId} {userId === user?.uid ? "(You)" : ""}
+            <ProfileName uid={userId} /> {userId === user?.uid ? "(You)" : ""}
           </Heading>
         </Box>
       ))}

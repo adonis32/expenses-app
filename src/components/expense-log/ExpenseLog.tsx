@@ -4,6 +4,7 @@ import ExpenseProvider, { useExpense, Expense } from "../../context/expense";
 import { Box, Heading, Text, Flex, IconButton } from "@chakra-ui/core";
 import { useListById } from "../../context/list";
 import { useAuth } from "../../context/auth";
+import ProfileName from "../profile-name";
 
 function ExpenseLog() {
   const match = useRouteMatch<{ listId: string }>();
@@ -31,11 +32,11 @@ function ExpenseList({ listId }: ExpenseListProps) {
   if (!user) return null;
 
   const groupedExpenses = expenses.reduce((prev, next) => {
-    const prevExpenses = prev[next.user.uid] ?? [];
+    const prevExpenses = prev[next.user] ?? [];
 
     return {
       ...prev,
-      [next.user.uid]: [...prevExpenses, next]
+      [next.user]: [...prevExpenses, next]
     };
   }, {} as Record<string, Expense[]>);
 
@@ -109,7 +110,7 @@ function ExpenseList({ listId }: ExpenseListProps) {
                 {expense.name}
               </Heading>
               <Text as="span" fontSize="xs" color="gray.500">
-                {expense.user.displayName}
+                <ProfileName uid={expense.user} />
               </Text>
             </Flex>
 

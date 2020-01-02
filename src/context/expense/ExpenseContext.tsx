@@ -5,11 +5,7 @@ import firebase from "firebase/app";
 export interface Expense {
   name: string;
   expense: number;
-  user: {
-    uid: string;
-    displayName: string;
-    photoURL: string;
-  };
+  user: string;
   __ref: firebase.firestore.DocumentReference;
 }
 

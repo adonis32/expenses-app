@@ -7,36 +7,39 @@ import CreateExpense from "../create-expense";
 import CreateList from "../create-list";
 import ManageList from "../manage-list";
 import JoinList from "../join-list";
+import ProfileProvider from "../../context/profile";
 
 function LoggedInRoutes() {
   return (
-    <ListProvider>
-      <Switch>
-        <Route exact path="/">
-          <Lists />
-        </Route>
+    <ProfileProvider>
+      <ListProvider>
+        <Switch>
+          <Route exact path="/">
+            <Lists />
+          </Route>
 
-        <Route exact path="/list/join">
-          <JoinList />
-        </Route>
+          <Route exact path="/list/join">
+            <JoinList />
+          </Route>
 
-        <Route exact path="/list/create">
-          <CreateList />
-        </Route>
+          <Route exact path="/list/create">
+            <CreateList />
+          </Route>
 
-        <Route path="/list/:listId/create">
-          <CreateExpense />
-        </Route>
+          <Route path="/list/:listId/create">
+            <CreateExpense />
+          </Route>
 
-        <Route path="/list/:listId/manage">
-          <ManageList />
-        </Route>
+          <Route path="/list/:listId/manage">
+            <ManageList />
+          </Route>
 
-        <Route path="/list/:listId">
-          <ExpenseLog />
-        </Route>
-      </Switch>
-    </ListProvider>
+          <Route path="/list/:listId">
+            <ExpenseLog />
+          </Route>
+        </Switch>
+      </ListProvider>
+    </ProfileProvider>
   );
 }
 
