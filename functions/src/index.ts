@@ -46,11 +46,8 @@ export const joinList = functions
       );
     }
 
-    if (!data.code || !data.id || !data.name) {
-      throw new HttpsError(
-        "invalid-argument",
-        "Code, ID and Name are required!"
-      );
+    if (!data.code || !data.id) {
+      throw new HttpsError("invalid-argument", "Code, ID are required!");
     }
 
     const { code, id } = data;
