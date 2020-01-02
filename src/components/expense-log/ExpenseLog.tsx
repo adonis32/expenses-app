@@ -107,22 +107,29 @@ function ExpenseList({ listId }: ExpenseListProps) {
       </Flex>
 
       <Box flex="1" overflowY="scroll">
-        {expenses.map(expense => (
-          <Flex key={expense.__ref.id} p={4} alignItems="center" width="100%">
-            <Flex flexDirection="column" flex="1">
-              <Heading as="h2" size="sm">
-                {expense.name}
-              </Heading>
-              <Text as="span" fontSize="xs" color="gray.500">
-                <ProfileName uid={expense.user} />
+        {expenses.map(expense => {
+          const date = new Date(expense.createdOn);
+
+          return (
+            <Flex key={expense.__ref.id} p={4} alignItems="center" width="100%">
+              <Flex flexDirection="column" flex="1">
+                <Heading as="h2" size="sm">
+                  {expense.name}
+                </Heading>
+                <Text as="span" fontSize="xs" color="gray.500">
+                  <ProfileName uid={expense.user} />
+                </Text>
+                <Text as="span" fontSize="xs" color="gray.500">
+                  {date.toLocaleDateString()} {date.toLocaleTimeString()}
+                </Text>
+              </Flex>
+
+              <Text as="span" fontSize="md" color="green.500">
+                {expense.expense}€
               </Text>
             </Flex>
-
-            <Text as="span" fontSize="md" color="green.500">
-              {expense.expense}€
-            </Text>
-          </Flex>
-        ))}
+          );
+        })}
       </Box>
 
       <Flex

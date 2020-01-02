@@ -6,6 +6,7 @@ export interface Expense {
   name: string;
   expense: number;
   user: string;
+  createdOn: number;
   __ref: firebase.firestore.DocumentReference;
 }
 
