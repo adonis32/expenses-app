@@ -37,7 +37,7 @@ function ExpenseList({ listId }: ExpenseListProps) {
 
     return {
       ...prev,
-      [next.user]: [...prevExpenses, next]
+      [next.user]: [...prevExpenses, next],
     };
   }, {} as Record<string, Expense[]>);
 
@@ -61,8 +61,9 @@ function ExpenseList({ listId }: ExpenseListProps) {
     otherUsersTotalEntries.length;
 
   const userTotal = expensesTotal(userExpenses);
-
-  const diff = userTotal - otherUsersTotalMedian;
+  const diffGroup = userTotal - otherUsersTotalMedian;
+  const diffToEachParticipant =
+    diffGroup / (Object.keys(otherUsersTotal).length + 1);
 
   return (
     <Flex height="100%" flexDirection="column">
@@ -107,16 +108,31 @@ function ExpenseList({ listId }: ExpenseListProps) {
       </Flex>
 
       <Box flex="1" overflowY="scroll">
-        {expenses.map(expense => {
+        {expenses.map((expense) => {
           const date = new Date(expense.createdOn);
 
+          const itsMine = user.uid === expense.user;
+
           return (
-            <Flex key={expense.__ref.id} p={4} alignItems="center" width="100%">
+            <Flex
+              key={expense.__ref.id}
+              p={4}
+              alignItems="center"
+              width="100%"
+              borderLeftWidth="6px"
+              borderLeftColor={itsMine ? "blue.500" : "gray.200"}
+              backgroundColor={itsMine ? "blue.50" : "transparent"}
+            >
               <Flex flexDirection="column" flex="1">
                 <Heading as="h2" size="sm">
                   {expense.name}
                 </Heading>
-                <Text as="span" fontSize="xs" color="gray.500">
+                <Text
+                  as="span"
+                  fontSize="xs"
+                  color={itsMine ? "blue.500" : "gray.500"}
+                  fontWeight={itsMine ? "bold" : undefined}
+                >
                   <ProfileName uid={expense.user} />
                 </Text>
                 <Text as="span" fontSize="xs" color="gray.500">
@@ -148,8 +164,12 @@ function ExpenseList({ listId }: ExpenseListProps) {
             Your expenses
           </Heading>
 
-          <Heading as="h4" size="sm" color="gray.600">
-            Difference
+          <Heading as="h4" size="xs" pt={1} color="gray.600">
+            Difference with the group
+          </Heading>
+
+          <Heading as="h4" size="xs" pt={1} color="gray.600">
+            Difference with each participant
           </Heading>
         </Flex>
 
@@ -160,10 +180,12 @@ function ExpenseList({ listId }: ExpenseListProps) {
           height="100%"
         >
           <Text as="span" fontSize="md" color="blue.500">
-            {userTotal}€
+            {Math.fround(userTotal).toFixed(2)}€
           </Text>
 
-          <DiffValue diff={diff} />
+          <DiffValue diff={diffGroup} />
+
+          <DiffValue diff={diffToEachParticipant} />
         </Flex>
       </Flex>
     </Flex>
@@ -171,7 +193,7 @@ function ExpenseList({ listId }: ExpenseListProps) {
 }
 
 function DiffValue({ diff }: { diff: number }) {
-  const value = isNaN(diff) ? 0 : diff;
+  const value = isNaN(diff) ? 0 : Number(diff.toFixed(2));
   let color: string;
 
   switch (true) {
@@ -186,7 +208,7 @@ function DiffValue({ diff }: { diff: number }) {
   }
 
   return (
-    <Text as="span" fontSize="sm" color={color}>
+    <Text as="span" fontSize="sm" pt={1} color={color}>
       {value}€
     </Text>
   );
