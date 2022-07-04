@@ -11,9 +11,10 @@ import {
 import { useHistory, useRouteMatch, Redirect } from "react-router-dom";
 import { useListById, List, useIsListAdmin } from "../../context/list";
 import { useAuth } from "../../context/auth";
-import nanoid from "nanoid";
+import { nanoid } from "nanoid";
 import ProfileName from "../profile-name";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
+import "firebase/compat/functions";
 import { CheckIcon, CloseIcon, LinkIcon } from "@chakra-ui/icons";
 
 type DeleteListFunction = (params: {

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "../auth";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 
 export interface Expense {
   name: string;
@@ -15,7 +16,7 @@ export interface ExpenseContext {
 }
 
 export const ExpenseContext = createContext<ExpenseContext>({
-  expenses: []
+  expenses: [],
 });
 
 export function useExpense() {
@@ -46,13 +47,13 @@ function ExpenseProvider({ children, listId }: ExpenseProviderProps) {
       .firestore()
       .collection(`lists/${listId}/expenses`)
       .orderBy("createdOn", "desc")
-      .onSnapshot(snapshot => {
+      .onSnapshot((snapshot) => {
         if (unmounted) return;
 
-        const expenses = snapshot.docs.map(expenseDoc => {
+        const expenses = snapshot.docs.map((expenseDoc) => {
           const expense = {
             ...expenseDoc.data(),
-            __ref: expenseDoc.ref
+            __ref: expenseDoc.ref,
           } as Expense;
 
           return expense;

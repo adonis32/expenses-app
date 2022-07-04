@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { Flex, Heading, Button } from "@chakra-ui/react";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
+import "firebase/compat/functions";
 
 interface JoinListParams {
   code?: string;

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 
 export interface AuthContext {
   user: firebase.User | null;
@@ -8,7 +9,7 @@ export interface AuthContext {
 
 export const AuthContext = createContext<AuthContext>({
   user: null,
-  loading: false
+  loading: false,
 });
 
 export function useAuth() {
@@ -26,19 +27,16 @@ function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     let unmounted = false;
 
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (unmounted) return;
       setUser(user);
       setLoading(false);
 
       if (user) {
-        firebase
-          .firestore()
-          .doc(`profiles/${user.uid}`)
-          .set({
-            name: user.displayName,
-            photoURL: user.photoURL
-          });
+        firebase.firestore().doc(`profiles/${user.uid}`).set({
+          name: user.displayName,
+          photoURL: user.photoURL,
+        });
       }
     });
 

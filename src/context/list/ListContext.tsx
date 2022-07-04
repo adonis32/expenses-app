@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "../auth";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 
 export interface List {
   name: string;
@@ -18,7 +19,7 @@ export interface ListContext {
 }
 
 export const ListContext = createContext<ListContext>({
-  lists: []
+  lists: [],
 });
 
 export function useList() {
@@ -45,13 +46,13 @@ function ListProvider({ children }: ListProviderProps) {
       .collection("lists")
       .where("users", "array-contains", user.uid)
       .orderBy("createdOn", "desc")
-      .onSnapshot(snapshot => {
+      .onSnapshot((snapshot) => {
         if (unmounted) return;
 
-        const lists = snapshot.docs.map(listDoc => {
+        const lists = snapshot.docs.map((listDoc) => {
           const list = {
             ...listDoc.data(),
-            __ref: listDoc.ref
+            __ref: listDoc.ref,
           } as List;
 
           return list;
@@ -68,7 +69,7 @@ function ListProvider({ children }: ListProviderProps) {
 
   return (
     <ListContext.Provider
-      value={{ lists: lists.filter(list => !list.deleting) }}
+      value={{ lists: lists.filter((list) => !list.deleting) }}
     >
       {children}
     </ListContext.Provider>
