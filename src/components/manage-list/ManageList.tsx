@@ -6,14 +6,15 @@ import {
   Box,
   Text,
   Input,
-  Button
-} from "@chakra-ui/core";
+  Button,
+} from "@chakra-ui/react";
 import { useHistory, useRouteMatch, Redirect } from "react-router-dom";
 import { useListById, List, useIsListAdmin } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import nanoid from "nanoid";
 import ProfileName from "../profile-name";
 import firebase from "firebase/app";
+import { CheckIcon, CloseIcon, LinkIcon } from "@chakra-ui/icons";
 
 type DeleteListFunction = (params: {
   id: string;
@@ -66,7 +67,7 @@ function ManageList() {
     if (navigator.share) {
       await navigator.share({
         text: `Join ${list.name} at ExpensesApp!`,
-        url
+        url,
       });
     } else if (navigator.clipboard) {
       await navigator.clipboard.writeText(url);
@@ -116,7 +117,7 @@ function ManageList() {
       >
         <IconButton
           aria-label="Close"
-          icon="close"
+          icon={<CloseIcon />}
           ml={1}
           backgroundColor="transparent"
           onClick={() => history.goBack()}
@@ -131,8 +132,8 @@ function ManageList() {
         <IconButton
           ml="auto"
           aria-label="Save"
-          icon="check"
-          variantColor="blue"
+          icon={<CheckIcon />}
+          colorScheme="blue"
           mr={2}
           onClick={updateList}
           isLoading={saveLoading}
@@ -149,7 +150,7 @@ function ManageList() {
       <Box p={4}>
         <Button
           variant="ghost"
-          variantColor="red"
+          colorScheme="red"
           width="100%"
           isLoading={deleteLoading}
           isDisabled={deleteLoading}
@@ -173,7 +174,7 @@ interface ManageListFormProps {
 function ManageListForm({
   list,
   onChange,
-  shareInviteLink
+  shareInviteLink,
 }: ManageListFormProps) {
   const [name, setName] = useState(list.name);
   const [users] = useState<string[]>(list.users);
@@ -183,7 +184,7 @@ function ManageListForm({
   useEffect(() => {
     onChange({
       name,
-      users
+      users,
     });
   }, [name, users, onChange]);
 
@@ -214,7 +215,7 @@ function ManageListForm({
 
       <Box px={4}>
         <Button
-          leftIcon="link"
+          leftIcon={<LinkIcon />}
           onClick={onSendInviteLinkClick}
           width="100%"
           isLoading={shareLoading}
@@ -224,7 +225,7 @@ function ManageListForm({
         </Button>
       </Box>
 
-      {users.map(userId => (
+      {users.map((userId) => (
         <Box key={userId} p={4}>
           <Heading as="h4" size="sm">
             <ProfileName uid={userId} /> {userId === user?.uid ? "(You)" : ""}

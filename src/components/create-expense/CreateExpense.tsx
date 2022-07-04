@@ -10,11 +10,12 @@ import {
   NumberDecrementStepper,
   Box,
   Text,
-  Input
-} from "@chakra-ui/core";
+  Input,
+} from "@chakra-ui/react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useListById } from "../../context/list";
 import { useAuth } from "../../context/auth";
+import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
 
 function CreateExpense() {
   const match = useRouteMatch<{ listId: string }>();
@@ -39,7 +40,7 @@ function CreateExpense() {
       name,
       expense,
       user: user.uid,
-      createdOn: Date.now()
+      createdOn: Date.now(),
     });
 
     setLoading(false);
@@ -56,7 +57,7 @@ function CreateExpense() {
       >
         <IconButton
           aria-label="Close"
-          icon="close"
+          icon={<CloseIcon />}
           ml={1}
           backgroundColor="transparent"
           onClick={() => history.goBack()}
@@ -71,8 +72,8 @@ function CreateExpense() {
         <IconButton
           ml="auto"
           aria-label="Save"
-          icon="check"
-          variantColor="blue"
+          icon={<CheckIcon />}
+          colorScheme="blue"
           mr={2}
           onClick={createExpense}
           isLoading={loading}
@@ -91,7 +92,7 @@ function CreateExpense() {
           min={0.01}
           precision={2}
           step={1}
-          onChange={value => setExpense(Number(value))}
+          onChange={(value) => setExpense(Number(value))}
         >
           <NumberInputField type="number" />
           <NumberInputStepper>

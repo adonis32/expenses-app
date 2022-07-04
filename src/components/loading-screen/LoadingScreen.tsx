@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, CircularProgress } from "@chakra-ui/core";
+import { Flex, CircularProgress } from "@chakra-ui/react";
 
 function LoadingScreen() {
   return (

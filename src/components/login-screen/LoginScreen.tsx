@@ -5,12 +5,13 @@ import firebase from "firebase/app";
 const uiConfig: firebaseui.auth.Config = {
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   callbacks: {
-    signInSuccessWithAuthResult: () => false
-  }
+    signInSuccessWithAuthResult: () => false,
+  },
 };
 
 function LoginScreen() {
   return (
+    // @ts-ignore
     <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
   );
 }

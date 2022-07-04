@@ -1,10 +1,11 @@
 import React from "react";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import ExpenseProvider, { useExpense, Expense } from "../../context/expense";
-import { Box, Heading, Text, Flex, IconButton } from "@chakra-ui/core";
+import { Box, Heading, Text, Flex, IconButton } from "@chakra-ui/react";
 import { useListById, useIsListAdmin } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import ProfileName from "../profile-name";
+import { AddIcon, AtSignIcon, CloseIcon } from "@chakra-ui/icons";
 
 function ExpenseLog() {
   const match = useRouteMatch<{ listId: string }>();
@@ -41,10 +42,8 @@ function ExpenseList({ listId }: ExpenseListProps) {
     };
   }, {} as Record<string, Expense[]>);
 
-  const {
-    [user.uid]: userExpenses = [],
-    ...otherUserExpenses
-  } = groupedExpenses;
+  const { [user.uid]: userExpenses = [], ...otherUserExpenses } =
+    groupedExpenses;
 
   const otherUsersTotalEntries = Object.entries(otherUserExpenses).map(
     ([user, expenses]) => {
@@ -74,7 +73,7 @@ function ExpenseList({ listId }: ExpenseListProps) {
       >
         <IconButton
           aria-label="Close"
-          icon="close"
+          icon={<CloseIcon />}
           ml={1}
           backgroundColor="transparent"
           onClick={() => history.goBack()}
@@ -90,7 +89,7 @@ function ExpenseList({ listId }: ExpenseListProps) {
           {isAdmin && (
             <IconButton
               aria-label="Manage list"
-              icon="at-sign"
+              icon={<AtSignIcon />}
               variant="ghost"
               mr={2}
               onClick={() => history.push(`/list/${listId}/manage`)}
@@ -99,8 +98,8 @@ function ExpenseList({ listId }: ExpenseListProps) {
 
           <IconButton
             aria-label="Add expense"
-            icon="add"
-            variantColor="blue"
+            icon={<AddIcon />}
+            colorScheme="blue"
             mr={2}
             onClick={() => history.push(`/list/${listId}/create`)}
           />

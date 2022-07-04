@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import qs from "querystring";
 import { useLocation, useHistory } from "react-router-dom";
-import { Flex, Heading, Button } from "@chakra-ui/core";
+import { Flex, Heading, Button } from "@chakra-ui/react";
 import firebase from "firebase/app";
 
 interface JoinListParams {
@@ -21,9 +20,9 @@ const joinListFunction: JoinListFunction = firebase
 function JoinList() {
   const location = useLocation();
   const history = useHistory();
-  const { id, code } = qs.parse(
-    location.search.replace("?id", "id")
-  ) as JoinListParams;
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get("id");
+  const code = searchParams.get("code");
   const [loading, setLoading] = useState(false);
 
   async function join() {
@@ -57,7 +56,7 @@ function JoinList() {
       </Heading>
 
       <Button
-        variantColor="blue"
+        colorScheme="blue"
         onClick={join}
         width="100%"
         isLoading={loading}

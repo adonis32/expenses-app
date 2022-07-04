@@ -2,7 +2,8 @@ import React, { useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import firebase from "firebase/app";
-import { Flex, IconButton, Heading, Box, Input, Text } from "@chakra-ui/core";
+import { Flex, IconButton, Heading, Box, Input, Text } from "@chakra-ui/react";
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 
 function CreateList() {
   const history = useHistory();
@@ -24,9 +25,9 @@ function CreateList() {
         name,
         users: [user.uid],
         permissions: {
-          admin: user.uid
+          admin: user.uid,
         },
-        createdOn: Date.now()
+        createdOn: Date.now(),
       });
 
     setLoading(false);
@@ -43,7 +44,7 @@ function CreateList() {
       >
         <IconButton
           aria-label="Close"
-          icon="close"
+          icon={<CloseIcon />}
           ml={1}
           backgroundColor="transparent"
           onClick={() => history.goBack()}
@@ -58,8 +59,8 @@ function CreateList() {
         <IconButton
           ml="auto"
           aria-label="Save"
-          icon="check"
-          variantColor="blue"
+          icon={<CheckIcon />}
+          colorScheme="blue"
           mr={2}
           onClick={createList}
           isLoading={loading}

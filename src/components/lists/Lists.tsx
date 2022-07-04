@@ -1,7 +1,8 @@
 import React from "react";
 import { useList } from "../../context/list";
-import { Box, Heading, IconButton, Flex } from "@chakra-ui/core";
+import { Box, Heading, IconButton, Flex } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
+import { AddIcon } from "@chakra-ui/icons";
 
 function Lists() {
   const { lists } = useList();
@@ -23,14 +24,14 @@ function Lists() {
         <IconButton
           ml="auto"
           aria-label="Create list"
-          icon="add"
-          variantColor="blue"
+          icon={<AddIcon />}
+          colorScheme="blue"
           mr={2}
           onClick={() => history.push("/list/create")}
         />
       </Flex>
 
-      {lists.map(list => (
+      {lists.map((list) => (
         <Link key={list.__ref.id} to={`/list/${list.__ref.id}`}>
           <Box p={4} cursor="pointer">
             <Heading as="h2" size="sm">
