@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./firebase";
-import "./index.scss";
+import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import Root from "./Root";
 
