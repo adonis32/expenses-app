@@ -4,7 +4,7 @@ import AuthProvider from "./context/auth";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import { theme } from "@chakra-ui/pro-theme";
+import { theme } from "./theme";
 
 const ProviderPack = createPack(AuthProvider);
 

@@ -4,11 +4,11 @@
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^1",
-    "@chakra-ui/pro-theme": "^0.0.53",
     "@chakra-ui/react": "^1.0.0",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
     "firebase": "^9.8.4",
+    "focus-visible": "^5.2.0",
     "framer-motion": "^4.0.0",
     "nanoid": "^4.0.0",
     "react": "^17.0.0",
