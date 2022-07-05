@@ -52,9 +52,9 @@ function CreateList() {
         />
 
         <Flex py={4} px={2} alignItems="center">
-          <Heading as="h2" size="sm">
+          <Text as="h1" size="sm" fontWeight={600}>
             Create list
-          </Heading>
+          </Text>
         </Flex>
 
         <IconButton

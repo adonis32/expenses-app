@@ -64,9 +64,9 @@ function CreateExpense() {
         />
 
         <Flex py={4} px={2} alignItems="center">
-          <Heading as="h2" size="sm">
+          <Text as="h1" size="sm" fontWeight={600}>
             Add expense to {list?.name}
-          </Heading>
+          </Text>
         </Flex>
 
         <IconButton

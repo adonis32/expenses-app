@@ -80,9 +80,9 @@ function ExpenseList({ listId }: ExpenseListProps) {
         />
 
         <Flex py={4} px={2} alignItems="center">
-          <Heading as="h2" size="sm">
+          <Text as="h1" size="sm" fontWeight={600}>
             {list?.name}
-          </Heading>
+          </Text>
         </Flex>
 
         <Flex ml="auto">
@@ -123,23 +123,23 @@ function ExpenseList({ listId }: ExpenseListProps) {
               backgroundColor={itsMine ? "blue.50" : "transparent"}
             >
               <Flex flexDirection="column" flex="1">
-                <Heading as="h2" size="sm">
+                <Text as="h2" fontSize="md" fontWeight={500}>
                   {expense.name}
-                </Heading>
+                </Text>
                 <Text
                   as="span"
-                  fontSize="xs"
+                  fontSize="sm"
                   color={itsMine ? "blue.500" : "gray.500"}
                   fontWeight={itsMine ? "bold" : undefined}
                 >
                   <ProfileName uid={expense.user} />
                 </Text>
-                <Text as="span" fontSize="xs" color="gray.500">
+                <Text as="span" fontSize="sm" color="gray.500">
                   {date.toLocaleDateString()} {date.toLocaleTimeString()}
                 </Text>
               </Flex>
 
-              <Text as="span" fontSize="md" color="green.500">
+              <Text as="span" fontSize="lg" color="green.500">
                 {expense.expense}€
               </Text>
             </Flex>
@@ -159,17 +159,17 @@ function ExpenseList({ listId }: ExpenseListProps) {
           justifyContent="space-between"
           height="100%"
         >
-          <Heading as="h2" size="md">
+          <Heading as="h2" size="xs">
             Your expenses
           </Heading>
 
-          <Heading as="h4" size="xs" pt={1} color="gray.600">
+          <Text as="h3" pt={1} color="gray.600">
             Difference with the group
-          </Heading>
+          </Text>
 
-          <Heading as="h4" size="xs" pt={1} color="gray.600">
+          <Text as="h3" pt={1} color="gray.600">
             Difference with each participant
-          </Heading>
+          </Text>
         </Flex>
 
         <Flex
@@ -178,7 +178,7 @@ function ExpenseList({ listId }: ExpenseListProps) {
           alignItems="flex-end"
           height="100%"
         >
-          <Text as="span" fontSize="md" color="blue.500">
+          <Text as="span" fontSize="xl" color="blue.500">
             {Math.fround(userTotal).toFixed(2)}€
           </Text>
 
@@ -207,7 +207,7 @@ function DiffValue({ diff }: { diff: number }) {
   }
 
   return (
-    <Text as="span" fontSize="sm" pt={1} color={color}>
+    <Text as="span" fontSize="md" pt={1} color={color}>
       {value}€
     </Text>
   );

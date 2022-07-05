@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import { Flex, Heading, Button } from "@chakra-ui/react";
+import { Flex, Heading, Button, Text } from "@chakra-ui/react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/functions";
 
@@ -52,9 +52,9 @@ function JoinList() {
       justifyContent="center"
       p={4}
     >
-      <Heading as="h1" size="md" mb={2}>
+      <Text as="h1" fontSize="2xl" fontWeight={600} mb={4}>
         You've been invited to this list
-      </Heading>
+      </Text>
 
       <Button
         colorScheme="blue"

@@ -125,9 +125,9 @@ function ManageList() {
         />
 
         <Flex py={4} px={2} alignItems="center">
-          <Heading as="h2" size="sm">
+          <Text as="h1" size="sm" fontWeight={600}>
             Manage {list?.name}
-          </Heading>
+          </Text>
         </Flex>
 
         <IconButton
@@ -228,9 +228,9 @@ function ManageListForm({
 
       {users.map((userId) => (
         <Box key={userId} p={4}>
-          <Heading as="h4" size="sm">
+          <Text size="sm" fontWeight={600}>
             <ProfileName uid={userId} /> {userId === user?.uid ? "(You)" : ""}
-          </Heading>
+          </Text>
         </Box>
       ))}
     </>
