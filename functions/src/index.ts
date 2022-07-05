@@ -20,10 +20,7 @@ export const deleteList = functions
 
     const { id } = data;
 
-    const list = await firebase
-      .firestore()
-      .doc(`lists/${id}`)
-      .get();
+    const list = await firebase.firestore().doc(`lists/${id}`).get();
 
     if (!list.exists) {
       throw new HttpsError("not-found", "List not found");
@@ -52,17 +49,14 @@ export const joinList = functions
 
     const { code, id } = data;
 
-    const list = await firebase
-      .firestore()
-      .doc(`lists/${id}`)
-      .get();
+    const list = await firebase.firestore().doc(`lists/${id}`).get();
 
     if (!list.exists || list.data()?.code !== code) {
       throw new HttpsError("not-found", "List not found");
     }
 
     await list.ref.update({
-      users: firebase.firestore.FieldValue.arrayUnion(context.auth.uid)
+      users: firebase.firestore.FieldValue.arrayUnion(context.auth.uid),
     });
   });
 
@@ -70,7 +64,7 @@ function deleteCollection(collectionPath: string, batchSize: number) {
   let collectionRef = firebase.firestore().collection(collectionPath);
   let query = collectionRef.orderBy("__name__").limit(batchSize);
 
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     deleteQueryBatch(query, batchSize, resolve, reject);
   });
 }
@@ -83,7 +77,7 @@ function deleteQueryBatch(
 ) {
   query
     .get()
-    .then(snapshot => {
+    .then((snapshot) => {
       // When there are no documents left, we are done
       if (snapshot.size == 0) {
         return 0;
@@ -91,7 +85,7 @@ function deleteQueryBatch(
 
       // Delete documents in a batch
       let batch = firebase.firestore().batch();
-      snapshot.docs.forEach(doc => {
+      snapshot.docs.forEach((doc) => {
         batch.delete(doc.ref);
       });
 
@@ -99,7 +93,7 @@ function deleteQueryBatch(
         return snapshot.size;
       });
     })
-    .then(numDeleted => {
+    .then((numDeleted) => {
       if (numDeleted === 0) {
         resolve();
         return;
