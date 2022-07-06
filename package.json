@@ -58,5 +58,10 @@
     "prettier": "^2.7.1",
     "vite": "^2.9.13",
     "vite-plugin-pwa": "^0.12.2"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@chakra-ui/image@1.1.10": "patches/@chakra-ui__image@1.1.10.patch"
+    }
   }
 }

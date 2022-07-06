@@ -1,0 +1,12 @@
+diff --git a/dist/chakra-ui-image.esm.js b/dist/chakra-ui-image.esm.js
+index 8670ba9f76a76a6df3e99762e5e2d0c8b7fb5b4b..368f89ea6a51b39eac847d80538de7ed1b9e11c6 100644
+--- a/dist/chakra-ui-image.esm.js
++++ b/dist/chakra-ui-image.esm.js
+@@ -75,6 +75,7 @@ function useImage(props) {
+     flush();
+     var img = new Image();
+     img.src = src;
++    img.referrerPolicy = "no-referrer";
+     if (crossOrigin) img.crossOrigin = crossOrigin;
+     if (srcSet) img.srcset = srcSet;
+     if (sizes) img.sizes = sizes;

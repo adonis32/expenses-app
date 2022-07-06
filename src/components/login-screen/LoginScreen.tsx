@@ -12,6 +12,7 @@ import { createIcon } from "@chakra-ui/react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { useState } from "react";
+import Logo from "../logo";
 
 function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
@@ -37,19 +38,7 @@ function LoginScreen() {
       >
         <Stack spacing="8">
           <Stack spacing="6" align="center">
-            <Box
-              role="img"
-              boxSize="80px"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              fontSize="4xl"
-              bgColor="black"
-              textColor="#FFFF00"
-              rounded="full"
-            >
-              $
-            </Box>
+            <Logo boxSize="80px" fontSize="4xl" />
             <Stack spacing="3" textAlign="center">
               <Heading size="xs">Log in to your account</Heading>
               <Text color="muted">Start sharing expenses</Text>

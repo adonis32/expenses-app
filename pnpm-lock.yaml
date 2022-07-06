@@ -1,5 +1,10 @@
 lockfileVersion: 5.4
 
+patchedDependencies:
+  '@chakra-ui/image@1.1.10':
+    hash: 56z44cf57ocd6aic34e5wqiwnm
+    path: patches/@chakra-ui__image@1.1.10.patch
+
 specifiers:
   '@chakra-ui/icons': ^1
   '@chakra-ui/react': ^1.0.0
@@ -1479,7 +1484,7 @@ packages:
       '@chakra-ui/system': '>=1.0.0'
       react: '>=16.8.6'
     dependencies:
-      '@chakra-ui/image': 1.1.10_5qblqjf622vzzkdskgddihcrca
+      '@chakra-ui/image': 1.1.10_56z44cf57ocd6aic34e5wqiwnm_5qblqjf622vzzkdskgddihcrca
       '@chakra-ui/react-utils': 1.2.3_react@17.0.2
       '@chakra-ui/system': 1.12.1_z5dax4wbbvawomfdisf4dzswiq
       '@chakra-ui/utils': 1.10.4
@@ -1685,7 +1690,7 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@chakra-ui/image/1.1.10_5qblqjf622vzzkdskgddihcrca:
+  /@chakra-ui/image/1.1.10_56z44cf57ocd6aic34e5wqiwnm_5qblqjf622vzzkdskgddihcrca:
     resolution: {integrity: sha512-PJZmhQ/R1PgdMyCRjALfoyq1FNh/WzMAw70sliHLtLcb9hBXniwQZuckYfUshCkUoFBj/ow9d4byn9Culdpk7Q==}
     peerDependencies:
       '@chakra-ui/system': '>=1.0.0'
@@ -1696,6 +1701,7 @@ packages:
       '@chakra-ui/utils': 1.10.4
       react: 17.0.2
     dev: false
+    patched: true
 
   /@chakra-ui/input/1.4.6_5qblqjf622vzzkdskgddihcrca:
     resolution: {integrity: sha512-Ljy/NbOhh9cNQxKTWQRsT4aQiXs2vVya+Cj5NpMAz08NFFjPZovsTawhI7m6ejT5Vsh76QYjh2rOLLI3fWqQQw==}
@@ -1948,7 +1954,7 @@ packages:
       '@chakra-ui/form-control': 1.6.0_5qblqjf622vzzkdskgddihcrca
       '@chakra-ui/hooks': 1.9.1_react@17.0.2
       '@chakra-ui/icon': 2.0.5_5qblqjf622vzzkdskgddihcrca
-      '@chakra-ui/image': 1.1.10_5qblqjf622vzzkdskgddihcrca
+      '@chakra-ui/image': 1.1.10_56z44cf57ocd6aic34e5wqiwnm_5qblqjf622vzzkdskgddihcrca
       '@chakra-ui/input': 1.4.6_5qblqjf622vzzkdskgddihcrca
       '@chakra-ui/layout': 1.8.0_5qblqjf622vzzkdskgddihcrca
       '@chakra-ui/live-region': 1.1.6_react@17.0.2
