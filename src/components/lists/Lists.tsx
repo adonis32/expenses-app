@@ -92,13 +92,7 @@ function Lists() {
             rounded="2xl"
             boxShadow="sm"
           >
-            <Text
-              as="h2"
-              lineHeight="1"
-              fontSize={"20px"}
-              height={"20px"}
-              fontWeight={500}
-            >
+            <Text as="h2" lineHeight="20px" fontSize={"20px"} fontWeight={500}>
               {list.name}
             </Text>
 
