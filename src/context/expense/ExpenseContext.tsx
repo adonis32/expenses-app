@@ -11,11 +11,11 @@ export interface Expense {
   __ref: firebase.firestore.DocumentReference;
 }
 
-export interface ExpenseContext {
+export interface ExpenseContextType {
   expenses: Expense[];
 }
 
-export const ExpenseContext = createContext<ExpenseContext>({
+export const ExpenseContext = createContext<ExpenseContextType>({
   expenses: [],
 });
 

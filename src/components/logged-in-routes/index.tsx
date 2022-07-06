@@ -1,3 +1,2 @@
-export { default } from './LoggedInRoutes';
-export * from './LoggedInRoutes';
-
+export { default } from "./LoggedInRoutes";
+export * from "./LoggedInRoutes";

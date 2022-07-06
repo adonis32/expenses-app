@@ -1,6 +1,6 @@
 import React from "react";
 import { useList } from "../../context/list";
-import { Box, Heading, IconButton, Flex, Text } from "@chakra-ui/react";
+import { Box, IconButton, Flex, Text } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
 import { AddIcon } from "@chakra-ui/icons";
 

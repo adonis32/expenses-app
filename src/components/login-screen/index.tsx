@@ -1,3 +1,2 @@
-export { default } from './LoginScreen';
-export * from './LoginScreen';
-
+export { default } from "./LoginScreen";
+export * from "./LoginScreen";

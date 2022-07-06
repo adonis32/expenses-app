@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
-import { Flex, IconButton, Heading, Box, Input, Text } from "@chakra-ui/react";
+import { Flex, IconButton, Box, Input, Text } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 
 function CreateList() {

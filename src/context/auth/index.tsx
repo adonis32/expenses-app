@@ -1,3 +1,2 @@
-export { default } from './AuthContext';
-export * from './AuthContext';
-
+export { default } from "./AuthContext";
+export * from "./AuthContext";

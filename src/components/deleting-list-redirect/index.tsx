@@ -1,3 +1,2 @@
-export { default } from './DeletingListRedirect';
-export * from './DeletingListRedirect';
-
+export { default } from "./DeletingListRedirect";
+export * from "./DeletingListRedirect";

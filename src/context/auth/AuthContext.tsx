@@ -2,12 +2,12 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
-export interface AuthContext {
+export interface AuthContextType {
   user: firebase.User | null;
   loading: boolean;
 }
 
-export const AuthContext = createContext<AuthContext>({
+export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: false,
 });

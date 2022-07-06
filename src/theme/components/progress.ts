@@ -1,32 +1,32 @@
 const baseStyle = {
   track: {
-    borderRadius: 'base',
+    borderRadius: "base",
   },
-}
+};
 
 const variants = {
   solid: {
     track: {
-      bg: 'bg-muted',
+      bg: "bg-muted",
     },
   },
-  'on-accent': {
+  "on-accent": {
     track: {
-      bg: 'transparent',
+      bg: "transparent",
     },
     filledTrack: {
-      bg: 'brand.50',
+      bg: "brand.50",
     },
   },
-}
+};
 
 const defaultProps = {
-  colorScheme: 'brand',
-  variant: 'solid',
-}
+  colorScheme: "brand",
+  variant: "solid",
+};
 
 export default {
   variants,
   baseStyle,
   defaultProps,
-}
+};

@@ -1,3 +1,2 @@
-export { default } from './ProfileName';
-export * from './ProfileName';
-
+export { default } from "./ProfileName";
+export * from "./ProfileName";

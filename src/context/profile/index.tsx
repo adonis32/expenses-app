@@ -1,3 +1,2 @@
-export { default } from './ProfileContext';
-export * from './ProfileContext';
-
+export { default } from "./ProfileContext";
+export * from "./ProfileContext";

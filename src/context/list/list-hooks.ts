@@ -4,7 +4,7 @@ import { useAuth } from "../auth";
 export function useListById(id: string) {
   const { lists } = useList();
 
-  return lists.find(list => list.__ref.id === id);
+  return lists.find((list) => list.__ref.id === id);
 }
 
 export function useIsListAdmin(id: string) {

@@ -1,13 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import {
-  Flex,
-  IconButton,
-  Heading,
-  Box,
-  Text,
-  Input,
-  Button,
-} from "@chakra-ui/react";
+import { Flex, IconButton, Box, Text, Input, Button } from "@chakra-ui/react";
 import { useHistory, useRouteMatch, Redirect } from "react-router-dom";
 import { useListById, List, useIsListAdmin } from "../../context/list";
 import { useAuth } from "../../context/auth";

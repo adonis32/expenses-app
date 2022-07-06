@@ -7,12 +7,12 @@ export interface Profile {
   photoURL: string;
 }
 
-export interface ProfileContext {
+export interface ProfileContextType {
   profiles: Record<string, Profile>;
   fetchProfile: (uid: string) => void;
 }
 
-export const ProfileContext = createContext<ProfileContext>({
+export const ProfileContext = createContext<ProfileContextType>({
   profiles: {},
   fetchProfile: () => null,
 });
@@ -26,7 +26,7 @@ interface ProfileProviderProps {
 }
 
 function ProfileProvider({ children }: ProfileProviderProps) {
-  const [profiles, setProfiles] = useState<ProfileContext["profiles"]>({});
+  const [profiles, setProfiles] = useState<ProfileContextType["profiles"]>({});
 
   const fetchProfile = useCallback(async (uid: string) => {
     const profileDoc = await firebase.firestore().doc(`profiles/${uid}`).get();

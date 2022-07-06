@@ -1,3 +1,2 @@
-export { default } from './JoinList';
-export * from './JoinList';
-
+export { default } from "./JoinList";
+export * from "./JoinList";

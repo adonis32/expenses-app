@@ -1,13 +1,13 @@
 const variants = {
   menu: () => ({
-    borderRadius: 'lg',
+    borderRadius: "lg",
     _hover: {
-      textDecoration: 'none',
-      bg: 'bg-subtle',
+      textDecoration: "none",
+      bg: "bg-subtle",
     },
   }),
-}
+};
 
 export default {
   variants,
-}
+};

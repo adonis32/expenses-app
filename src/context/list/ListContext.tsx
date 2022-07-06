@@ -14,11 +14,11 @@ export interface List {
   __ref: firebase.firestore.DocumentReference;
 }
 
-export interface ListContext {
+export interface ListContextType {
   lists: List[];
 }
 
-export const ListContext = createContext<ListContext>({
+export const ListContext = createContext<ListContextType>({
   lists: [],
 });
 

@@ -1,3 +1,2 @@
-export { default } from './ManageList';
-export * from './ManageList';
-
+export { default } from "./ManageList";
+export * from "./ManageList";

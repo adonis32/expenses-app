@@ -1,3 +1,2 @@
-export { default } from './ExpenseContext';
-export * from './ExpenseContext';
-
+export { default } from "./ExpenseContext";
+export * from "./ExpenseContext";

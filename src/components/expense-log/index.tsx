@@ -1,3 +1,2 @@
-export { default } from './ExpenseLog';
-export * from './ExpenseLog';
-
+export { default } from "./ExpenseLog";
+export * from "./ExpenseLog";

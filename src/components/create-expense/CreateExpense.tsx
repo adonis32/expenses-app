@@ -2,7 +2,6 @@ import React, { useState, useCallback } from "react";
 import {
   Flex,
   IconButton,
-  Heading,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
