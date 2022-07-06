@@ -150,8 +150,8 @@ function ManageList() {
 
       <Box p={4}>
         <Button
-          variant="ghost"
-          colorScheme="red"
+          variant="outline"
+          color="red.400"
           width="100%"
           isLoading={deleteLoading}
           isDisabled={deleteLoading}
