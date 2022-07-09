@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
+import * as React from "react";
 import { Flex, IconButton, Box, Text, Input, Button } from "@chakra-ui/react";
 import { useHistory, useRouteMatch, Redirect } from "react-router-dom";
 import { useListById, List, useIsListAdmin } from "../../context/list";

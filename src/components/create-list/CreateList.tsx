@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
+import * as React from "react";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import firebase from "firebase/compat/app";

@@ -1,4 +1,3 @@
-import React from "react";
 import LoginScreen from "./components/login-screen";
 import { useAuth } from "./context/auth";
 import LoggedInRoutes from "./components/logged-in-routes";

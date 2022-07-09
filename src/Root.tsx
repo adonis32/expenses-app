@@ -1,4 +1,3 @@
-import React from "react";
 import { createPack } from "react-component-pack";
 import AuthProvider from "./context/auth";
 import App from "./App";

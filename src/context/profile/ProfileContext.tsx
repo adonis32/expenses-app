@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useCallback, useState } from "react";
+import { createContext, useContext, useCallback, useState } from "react";
+import * as React from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 

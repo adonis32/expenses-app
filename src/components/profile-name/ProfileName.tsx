@@ -1,4 +1,3 @@
-import React from "react";
 import { useProfileById } from "../../context/profile/profile-hooks";
 
 interface ProfileNameProps {

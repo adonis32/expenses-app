@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { Flex, Button, Text } from "@chakra-ui/react";
 import firebase from "firebase/compat/app";
