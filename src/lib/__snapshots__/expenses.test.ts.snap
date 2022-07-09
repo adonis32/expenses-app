@@ -1,5 +1,77 @@
 // Vitest Snapshot v1
 
+exports[`ExpenseV2 calculateLogStatsBetweenTwoUsers > should return total 1, diffSplitted -2, diffUnsplitted -1 when user ows 1€ > should match {
+      userTotalSplitted: 100,
+      diffSplitted: -200,
+      diffUnsplitted: -100,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": -200,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": -100,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 100,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`ExpenseV2 calculateLogStatsBetweenTwoUsers > should return total 3, diffSplitted 0, diffUnsplitted 0 when both users made the same expenses > should match {
+      userTotalSplitted: 300,
+      diffSplitted: 0,
+      diffUnsplitted: 0,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": 0,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": 0,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 300,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`ExpenseV2 calculateLogStatsBetweenTwoUsers > should return total 3, diffSplitted 2, diffUnsplitted 1 when otherUser ows 1€ > should match {
+      userTotalSplitted: 300,
+      diffSplitted: 200,
+      diffUnsplitted: 100,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": 200,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": 100,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 300,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
 exports[`calculateLogStatsBetweenTwoUsers > should return total 1, diffSplitted -2, diffUnsplitted -1 when user ows 1€ > should match {
       userTotalSplitted: 100,
       diffSplitted: -200,

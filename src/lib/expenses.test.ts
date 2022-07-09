@@ -2,6 +2,7 @@ import { describe, test, expect } from "vitest";
 import {
   calculateLogStatsBetweenTwoUsers,
   calculateLogStatsOfUser,
+  ExpenseInput,
 } from "./expenses";
 
 describe("calculateLogStatsBetweenTwoUsers", () => {
@@ -46,6 +47,102 @@ describe("calculateLogStatsBetweenTwoUsers", () => {
     const expenses = [
       { expense: 3, user: "user1" },
       { expense: 1, user: "user2" },
+    ];
+
+    const result = calculateLogStatsBetweenTwoUsers(user, otherUser, expenses);
+
+    expect(result).toMatchSnapshot(`should match {
+      userTotalSplitted: 300,
+      diffSplitted: 200,
+      diffUnsplitted: 100,
+    }`);
+  });
+});
+
+describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
+  test("should return total 3, diffSplitted 0, diffUnsplitted 0 when both users made the same expenses", () => {
+    const user = "user1";
+    const otherUser = "user2";
+    const expenses: ExpenseInput[] = [
+      {
+        version: 2,
+        expense: 100,
+        user: "user1",
+        paidBy: "user1",
+        splittedWith: { user1: 0.5, user2: 0.5 },
+      },
+      {
+        version: 2,
+        expense: 200,
+        user: "user1",
+        paidBy: "user1",
+        splittedWith: { user1: 0.5, user2: 0.5 },
+      },
+      {
+        version: 2,
+        expense: 300,
+        user: "user2",
+        paidBy: "user2",
+        splittedWith: { user1: 0.5, user2: 0.5 },
+      },
+    ];
+
+    const result = calculateLogStatsBetweenTwoUsers(user, otherUser, expenses);
+
+    expect(result).toMatchSnapshot(`should match {
+      userTotalSplitted: 300,
+      diffSplitted: 0,
+      diffUnsplitted: 0,
+    }`);
+  });
+
+  test("should return total 1, diffSplitted -2, diffUnsplitted -1 when user ows 1€", () => {
+    const user = "user1";
+    const otherUser = "user2";
+    const expenses: ExpenseInput[] = [
+      {
+        version: 2,
+        expense: 100,
+        user: "user1",
+        paidBy: "user1",
+        splittedWith: { user1: 0.5, user2: 0.5 },
+      },
+      {
+        version: 2,
+        expense: 300,
+        user: "user2",
+        paidBy: "user2",
+        splittedWith: { user1: 0.5, user2: 0.5 },
+      },
+    ];
+
+    const result = calculateLogStatsBetweenTwoUsers(user, otherUser, expenses);
+
+    expect(result).toMatchSnapshot(`should match {
+      userTotalSplitted: 100,
+      diffSplitted: -200,
+      diffUnsplitted: -100,
+    }`);
+  });
+
+  test("should return total 3, diffSplitted 2, diffUnsplitted 1 when otherUser ows 1€", () => {
+    const user = "user1";
+    const otherUser = "user2";
+    const expenses: ExpenseInput[] = [
+      {
+        version: 2,
+        expense: 300,
+        user: "user1",
+        paidBy: "user1",
+        splittedWith: { user1: 0.5, user2: 0.5 },
+      },
+      {
+        version: 2,
+        expense: 100,
+        user: "user2",
+        paidBy: "user2",
+        splittedWith: { user1: 0.5, user2: 0.5 },
+      },
     ];
 
     const result = calculateLogStatsBetweenTwoUsers(user, otherUser, expenses);
