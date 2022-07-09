@@ -1,16 +1,16 @@
 import type { User } from "../context/auth";
 import type { Expense } from "../context/expense";
 
-export type ExpenseUser = Pick<User, "uid">;
+export type ExpenseUser = string;
 export type ExpenseInput = Pick<Expense, "expense" | "user">;
 
 export function calculateLogStatsBetweenTwoUsers(
-  user: ExpenseUser,
-  otherUser: ExpenseUser,
+  userUid: ExpenseUser,
+  otherUserUid: ExpenseUser,
   expenses: ExpenseInput[]
 ) {
   const groupedExpenses = expenses
-    .filter((expense) => [user.uid, otherUser.uid].includes(expense.user))
+    .filter((expense) => [userUid, otherUserUid].includes(expense.user))
     .reduce((prev, next) => {
       const prevExpenses = prev[next.user] ?? [];
 
@@ -21,8 +21,8 @@ export function calculateLogStatsBetweenTwoUsers(
     }, {} as Record<string, ExpenseInput[]>);
 
   const {
-    [user.uid]: userExpenses = [],
-    [otherUser.uid]: otherUserExpenses = [],
+    [userUid]: userExpenses = [],
+    [otherUserUid]: otherUserExpenses = [],
   } = groupedExpenses;
 
   const userTotalSplitted = expensesTotal(userExpenses);
@@ -41,22 +41,22 @@ export function calculateLogStatsBetweenTwoUsers(
 type UserDiff = ReturnType<typeof calculateLogStatsBetweenTwoUsers>;
 
 export function calculateLogStatsOfUser(
-  user: ExpenseUser,
+  userUid: ExpenseUser,
   otherUsers: ExpenseUser[],
   expenses: ExpenseInput[]
 ) {
   const diffs: Record<string, UserDiff> = {};
 
-  for (const otherUser of otherUsers) {
-    diffs[otherUser.uid] = calculateLogStatsBetweenTwoUsers(
-      user,
-      otherUser,
+  for (const otherUserUid of otherUsers) {
+    diffs[otherUserUid] = calculateLogStatsBetweenTwoUsers(
+      userUid,
+      otherUserUid,
       expenses
     );
   }
 
   const userTotalSplitted = expensesTotal(
-    expenses.filter((expense) => expense.user === user.uid)
+    expenses.filter((expense) => expense.user === userUid)
   );
 
   const userOwes = Object.values(diffs)
@@ -80,7 +80,10 @@ export function calculateLogStatsOfUser(
 /**
  * @deprecated
  */
-export function calculateLogStats(user: ExpenseUser, expenses: ExpenseInput[]) {
+export function calculateLogStats(
+  user: Pick<User, "uid">,
+  expenses: ExpenseInput[]
+) {
   const groupedExpenses = expenses.reduce((prev, next) => {
     const prevExpenses = prev[next.user] ?? [];
 

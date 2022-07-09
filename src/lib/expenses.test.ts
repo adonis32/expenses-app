@@ -7,8 +7,8 @@ import {
 
 describe("calculateLogStatsBetweenTwoUsers", () => {
   test("should return total 3, diffSplitted 0, diffUnsplitted 0 when both users made the same expenses", () => {
-    const user = { uid: "user1" };
-    const otherUser = { uid: "user2" };
+    const user = "user1";
+    const otherUser = "user2";
     const expenses = [
       { expense: 1, user: "user1" },
       { expense: 2, user: "user1" },
@@ -25,8 +25,8 @@ describe("calculateLogStatsBetweenTwoUsers", () => {
   });
 
   test("should return total 1, diffSplitted -2, diffUnsplitted -1 when user ows 1€", () => {
-    const user = { uid: "user1" };
-    const otherUser = { uid: "user2" };
+    const user = "user1";
+    const otherUser = "user2";
     const expenses = [
       { expense: 1, user: "user1" },
       { expense: 3, user: "user2" },
@@ -42,8 +42,8 @@ describe("calculateLogStatsBetweenTwoUsers", () => {
   });
 
   test("should return total 3, diffSplitted 2, diffUnsplitted 1 when otherUser ows 1€", () => {
-    const user = { uid: "user1" };
-    const otherUser = { uid: "user2" };
+    const user = "user1";
+    const otherUser = "user2";
     const expenses = [
       { expense: 3, user: "user1" },
       { expense: 1, user: "user2" },
@@ -61,8 +61,8 @@ describe("calculateLogStatsBetweenTwoUsers", () => {
 
 describe("calculateLogStatsOfUser", () => {
   test("should owe 0 to user2, and 1.5 to user3", () => {
-    const user = { uid: "user1" };
-    const otherUsers = [{ uid: "user2" }, { uid: "user3" }];
+    const user = "user1";
+    const otherUsers = ["user2", "user3"];
     const expenses = [
       { expense: 1, user: "user1" },
       { expense: 2, user: "user1" },
@@ -89,8 +89,8 @@ describe("calculateLogStatsOfUser", () => {
   });
 
   test("user2 should owe 2 to user1", () => {
-    const user = { uid: "user1" };
-    const otherUsers = [{ uid: "user2" }];
+    const user = "user1";
+    const otherUsers = ["user2"];
     const expenses = [
       { expense: 1, user: "user1" },
       { expense: 2, user: "user1" },
@@ -110,8 +110,8 @@ describe("calculateLogStatsOfUser", () => {
   });
 
   test("user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2", () => {
-    const user = { uid: "user1" };
-    const otherUsers = [{ uid: "user2" }, { uid: "user3" }];
+    const user = "user1";
+    const otherUsers = ["user2", "user3"];
     const expenses = [
       { expense: 1, user: "user1" },
       { expense: 2, user: "user1" },
@@ -129,11 +129,7 @@ describe("calculateLogStatsOfUser", () => {
       diffUnsplitted: 1,
     });
 
-    result = calculateLogStatsOfUser(
-      { uid: "user3" },
-      [{ uid: "user2" }, { uid: "user1" }],
-      expenses
-    );
+    result = calculateLogStatsOfUser("user3", ["user2", "user1"], expenses);
 
     expect(result.userOwes).toEqual(2);
     expect(result.owedToUser).toEqual(0);
