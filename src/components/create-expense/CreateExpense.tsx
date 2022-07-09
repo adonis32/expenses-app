@@ -60,6 +60,13 @@ function CreateExpense() {
     history.goBack();
   }, [name, expense, list, user, history, toast]);
 
+  const intl = new Intl.NumberFormat("es-ES", {
+    style: "currency",
+    currency: "EUR",
+  });
+
+  const decimalSeparator = intl.format(0.1).charAt(1);
+
   const onExpenseValueChange: CurrencyInputProps["onValueChange"] = (
     _,
     __,
@@ -117,6 +124,9 @@ function CreateExpense() {
           onValueChange={onExpenseValueChange}
           allowDecimals={true}
           autoFocus={true}
+          transformRawValue={(raw: string) => {
+            return raw.replace(".", decimalSeparator);
+          }}
         />
 
         <Spacer h={4} />
