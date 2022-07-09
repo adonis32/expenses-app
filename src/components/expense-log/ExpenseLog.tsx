@@ -1,4 +1,4 @@
-import { useRouteMatch, useHistory } from "react-router-dom";
+import { useRouteMatch, useHistory, Link } from "react-router-dom";
 import ExpenseProvider, { useExpense } from "../../context/expense";
 import {
   Box,
@@ -150,6 +150,8 @@ function ExpenseList({ listId }: ExpenseListProps) {
           py={4}
         >
           <Button
+            as={Link}
+            to={`/list/${listId}/user-stats`}
             variant="link"
             color="brand.500"
             rightIcon={<Icon as={ArrowRight} />}

@@ -59,7 +59,7 @@ export function calculateLogStatsOfUser(
   );
 
   const userOwes = Object.values(diffs)
-    .filter((diff) => diff.diffUnsplitted <= 0)
+    .filter((diff) => diff.diffUnsplitted < 0)
     .map((diff) => diff.diffUnsplitted)
     .reduce((prev, next) => prev + Math.abs(next), 0);
 

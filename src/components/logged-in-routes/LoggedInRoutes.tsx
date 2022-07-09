@@ -8,6 +8,7 @@ import ManageList from "../manage-list";
 import JoinList from "../join-list";
 import ProfileProvider from "../../context/profile";
 import DeletingListRedirect from "../deleting-list-redirect";
+import ListUserStats from "../list-user-stats";
 
 function LoggedInRoutes() {
   return (
@@ -36,6 +37,10 @@ function LoggedInRoutes() {
 
           <Route path="/list/:listId/manage">
             <ManageList />
+          </Route>
+
+          <Route path="/list/:listId/user-stats">
+            <ListUserStats />
           </Route>
 
           <Route path="/list/:listId">
