@@ -27,7 +27,8 @@
     "lint:base": "eslint --ext .ts,.tsx",
     "lint": "pnpm lint:base src",
     "fmt": "pnpm lint:base --fix && prettier --write 'src/**/*.{ts,tsx,css}'",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "vitest"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -65,7 +66,8 @@
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "vite": "^2.9.13",
-    "vite-plugin-pwa": "^0.12.2"
+    "vite-plugin-pwa": "^0.12.2",
+    "vitest": "^0.18.0"
   },
   "pnpm": {
     "patchedDependencies": {
