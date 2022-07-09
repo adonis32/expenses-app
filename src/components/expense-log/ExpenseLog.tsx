@@ -17,6 +17,7 @@ import { AddIcon, AtSignIcon, CloseIcon } from "@chakra-ui/icons";
 import { calculateLogStatsOfUser } from "../../lib/expenses";
 import HyperScroller from "react-hyper-scroller";
 import { ArrowRight } from "react-feather";
+import DiffValue from "../diff-value";
 
 function ExpenseLog() {
   const match = useRouteMatch<{ listId: string }>();
@@ -119,18 +120,25 @@ function ExpenseList({ listId }: ExpenseListProps) {
         <Box px={6} py={4}>
           <Text fontSize="sm" fontWeight={500} whiteSpace="pre-wrap">
             You owe a total of{"\n"}
-            <Text as="span" color="orange.500" fontSize="lg" fontWeight={700}>
-              {userOwes.toFixed(2)}€
-            </Text>
+            <DiffValue
+              as="span"
+              fontSize="lg"
+              positiveColor="red.500"
+              fontWeight={700}
+              diff={userOwes}
+            />
           </Text>
 
           <Spacer h={2} />
 
           <Text fontSize="sm" fontWeight={500} whiteSpace="pre-wrap">
             The group owes you a total of{"\n"}
-            <Text as="span" color="green.500" fontSize="lg" fontWeight={700}>
-              {owedToUser.toFixed(2)}€
-            </Text>
+            <DiffValue
+              as="span"
+              fontSize="lg"
+              fontWeight={700}
+              diff={owedToUser}
+            />
           </Text>
         </Box>
 
