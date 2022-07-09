@@ -29,8 +29,19 @@ interface ProfileProviderProps {
 function ProfileProvider({ children }: ProfileProviderProps) {
   const [profiles, setProfiles] = useState<ProfileContextType["profiles"]>({});
 
+  const fetchingRef = React.useRef<Record<string, boolean>>({});
+
   const fetchProfile = useCallback(async (uid: string) => {
+    if (fetchingRef.current[uid]) {
+      return;
+    }
+
+    fetchingRef.current[uid] = true;
+
+    console.log("Fetching profile for", uid);
     const profileDoc = await firebase.firestore().doc(`profiles/${uid}`).get();
+
+    fetchingRef.current[uid] = false;
 
     if (!profileDoc.exists) return;
 
