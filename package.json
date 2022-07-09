@@ -9,7 +9,7 @@
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
     "dinero.js": "^1.9.1",
-    "firebase": "^9.8.4",
+    "firebase": "^9.9.0",
     "focus-visible": "^5.2.0",
     "framer-motion": "^4.0.0",
     "nanoid": "^4.0.0",
@@ -67,7 +67,7 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
-    "vite": "^2.9.13",
+    "vite": "^2.9.14",
     "vite-plugin-pwa": "^0.12.2",
     "vitest": "^0.18.0"
   },
