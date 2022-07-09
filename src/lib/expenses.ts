@@ -47,7 +47,7 @@ export function calculateLogStatsOfUser(
 ) {
   const diffs: Record<string, UserDiff> = {};
 
-  for (const otherUserUid of otherUsers) {
+  for (const otherUserUid of otherUsers.filter((uid) => uid !== userUid)) {
     diffs[otherUserUid] = calculateLogStatsBetweenTwoUsers(
       userUid,
       otherUserUid,
