@@ -28,12 +28,16 @@ interface ExpenseProviderProps {
   listId: string;
 }
 
+const cache = new Map<string, Expense[]>();
+
 function ExpenseProvider({ children, listId }: ExpenseProviderProps) {
   const { user } = useAuth();
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>(
+    () => cache.get(listId) ?? []
+  );
 
   useEffect(() => {
-    setExpenses([]);
+    setExpenses(cache.get(listId) ?? []);
   }, [listId]);
 
   useEffect(() => {
@@ -59,6 +63,7 @@ function ExpenseProvider({ children, listId }: ExpenseProviderProps) {
           return expense;
         });
 
+        cache.set(listId, expenses);
         setExpenses(expenses);
       });
 
