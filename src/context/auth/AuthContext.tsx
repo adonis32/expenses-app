@@ -27,17 +27,29 @@ function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     let unmounted = false;
 
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
       if (unmounted) return;
-      setUser(user);
-      setLoading(false);
 
       if (user) {
+        await firebase
+          .firestore()
+          .enablePersistence({
+            synchronizeTabs: true,
+          })
+          .catch(() => {
+            console.info(
+              "Persistence could not be enabled. Offline data for this user will be lost when the user closes the app."
+            );
+          });
+
         firebase.firestore().doc(`profiles/${user.uid}`).set({
           name: user.displayName,
           photoURL: user.photoURL,
         });
       }
+
+      setUser(user);
+      setLoading(false);
     });
 
     return () => {

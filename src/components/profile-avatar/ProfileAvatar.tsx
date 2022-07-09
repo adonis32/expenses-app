@@ -8,14 +8,12 @@ interface ProfileAvatarProps extends AvatarProps {
 function ProfileAvatar({ uid, ...props }: ProfileAvatarProps) {
   const profile = useProfileById(uid);
 
-  console.log(profile);
-
   return (
     <Avatar
       name={profile?.name}
       src={profile?.photoURL}
       {...props}
-      referrerpolicy="no-referrer"
+      referrerPolicy="no-referrer"
     />
   );
 }
