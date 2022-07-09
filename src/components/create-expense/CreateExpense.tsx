@@ -3,20 +3,18 @@ import * as React from "react";
 import {
   Flex,
   IconButton,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Box,
   Text,
   Input,
+  Spacer,
+  useToast,
 } from "@chakra-ui/react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useListById } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
 import { offlineAwait } from "../../lib/offline";
+import CurrencyInput, { CurrencyInputProps } from "react-currency-input-field";
 
 function CreateExpense() {
   const match = useRouteMatch<{ listId: string }>();
@@ -27,6 +25,7 @@ function CreateExpense() {
   const [expense, setExpense] = useState(1);
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const createExpense = useCallback(async () => {
     if (!list || !user) {
@@ -34,6 +33,16 @@ function CreateExpense() {
     }
 
     const ref = list.__ref;
+
+    if (!name) {
+      toast({
+        status: "error",
+        title: "A name for the expense is required",
+        position: "top",
+        isClosable: true,
+      });
+      return;
+    }
 
     setLoading(true);
 
@@ -49,7 +58,19 @@ function CreateExpense() {
     setLoading(false);
 
     history.goBack();
-  }, [name, expense, list, user, history]);
+  }, [name, expense, list, user, history, toast]);
+
+  const onExpenseValueChange: CurrencyInputProps["onValueChange"] = (
+    _,
+    __,
+    values
+  ) => {
+    const float = values?.float;
+
+    if (float) {
+      setExpense(float);
+    }
+  };
 
   return (
     <div>
@@ -89,22 +110,16 @@ function CreateExpense() {
           Expense
         </Text>
 
-        <NumberInput
-          aria-label="Expense"
-          value={expense}
-          min={0.01}
-          precision={2}
-          step={1}
-          onChange={(value) => setExpense(Number(value))}
-        >
-          <NumberInputField type="number" />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
+        <Input
+          as={CurrencyInput}
+          defaultValue={1.0}
+          intlConfig={{ locale: "es-ES", currency: "EUR" }}
+          onValueChange={onExpenseValueChange}
+          allowDecimals={true}
+          autoFocus={true}
+        />
 
-        <br />
+        <Spacer h={4} />
 
         <Text as="label" fontWeight="bold">
           Name
