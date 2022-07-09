@@ -105,7 +105,7 @@ function Lists() {
 
             <Spacer h={4} />
 
-            <Grid templateColumns="1.25fr 1fr">
+            <Grid templateColumns="1fr 130px">
               <GridItem>
                 <Text
                   as="h2"
