@@ -5,6 +5,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import { Flex, IconButton, Box, Input, Text } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { offlineAwait } from "../../lib/offline";
 
 function CreateList() {
   const history = useHistory();
@@ -19,17 +20,19 @@ function CreateList() {
 
     setLoading(true);
 
-    await firebase
-      .firestore()
-      .collection("lists")
-      .add({
-        name,
-        users: [user.uid],
-        permissions: {
-          admin: user.uid,
-        },
-        createdOn: Date.now(),
-      });
+    await offlineAwait(
+      firebase
+        .firestore()
+        .collection("lists")
+        .add({
+          name,
+          users: [user.uid],
+          permissions: {
+            admin: user.uid,
+          },
+          createdOn: Date.now(),
+        })
+    );
 
     setLoading(false);
 

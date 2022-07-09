@@ -15,6 +15,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import { useListById } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
+import { offlineAwait } from "../../lib/offline";
 
 function CreateExpense() {
   const match = useRouteMatch<{ listId: string }>();
@@ -35,12 +36,14 @@ function CreateExpense() {
 
     setLoading(true);
 
-    await ref.collection("expenses").add({
-      name,
-      expense,
-      user: user.uid,
-      createdOn: Date.now(),
-    });
+    await offlineAwait(
+      ref.collection("expenses").add({
+        name,
+        expense,
+        user: user.uid,
+        createdOn: Date.now(),
+      })
+    );
 
     setLoading(false);
 
