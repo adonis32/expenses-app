@@ -1,4 +1,3 @@
-import type { User } from "../context/auth";
 import type { Expense } from "../context/expense";
 
 export type ExpenseUser = string;
@@ -74,53 +73,6 @@ export function calculateLogStatsOfUser(
     userOwes,
     owedToUser,
     diffs,
-  };
-}
-
-/**
- * @deprecated
- */
-export function calculateLogStats(
-  user: Pick<User, "uid">,
-  expenses: ExpenseInput[]
-) {
-  const groupedExpenses = expenses.reduce((prev, next) => {
-    const prevExpenses = prev[next.user] ?? [];
-
-    return {
-      ...prev,
-      [next.user]: [...prevExpenses, next],
-    };
-  }, {} as Record<string, ExpenseInput[]>);
-
-  const { [user.uid]: userExpenses = [], ...otherUserExpenses } =
-    groupedExpenses;
-
-  const otherUsersTotalEntries = Object.entries(otherUserExpenses).map(
-    ([user, expenses]) => {
-      return [user, expensesTotal(expenses)];
-    }
-  );
-
-  const otherUsersTotal: Record<string, number> = Object.fromEntries(
-    otherUsersTotalEntries
-  );
-
-  const otherUsersTotalMedian =
-    Object.values(otherUsersTotal).reduce((prev, next) => prev + next, 0) /
-    otherUsersTotalEntries.length;
-
-  const userTotal = expensesTotal(userExpenses);
-  const diffGroup = userTotal - otherUsersTotalMedian;
-  const diffToEachParticipant =
-    diffGroup / (Object.keys(otherUsersTotal).length + 1);
-
-  return {
-    userTotal,
-    diffGroup: isNaN(diffGroup) ? 0 : diffGroup,
-    diffToEachParticipant: isNaN(diffToEachParticipant)
-      ? 0
-      : diffToEachParticipant,
   };
 }
 

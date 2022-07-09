@@ -1,6 +1,5 @@
 import { describe, test, expect } from "vitest";
 import {
-  calculateLogStats,
   calculateLogStatsBetweenTwoUsers,
   calculateLogStatsOfUser,
 } from "./expenses";

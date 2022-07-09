@@ -52,9 +52,9 @@ function Lists() {
       <Button
         width="full"
         onClick={() => history.push("/list/create")}
-        rounded="2xl"
         px="6"
         height="64px"
+        rounded="2xl"
         color="white"
         boxShadow="md"
         bgGradient={mode(
