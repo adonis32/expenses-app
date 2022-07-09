@@ -11,16 +11,17 @@ import {
   AvatarGroup,
   Grid,
   GridItem,
+  HStack,
 } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
 import Logo from "../logo";
-import { PlusCircle } from "react-feather";
+import { ArrowRight, PlusCircle } from "react-feather";
 import ProfileAvatar from "../profile-avatar";
 import ExpenseProvider, { useExpense } from "../../context/expense";
 import { useAuth } from "../../context/auth";
 import DiffValue from "../diff-value";
-import { calculateLogStats } from "../../lib/expenses";
-import { User as UserIcon, Users as UserGroupIcon } from "react-feather";
+import { calculateLogStatsOfUser } from "../../lib/expenses";
+import { Users as UserGroupIcon } from "react-feather";
 
 function Lists() {
   const { lists } = useList();
@@ -104,7 +105,7 @@ function Lists() {
 
             <Spacer h={4} />
 
-            <Grid templateColumns="2fr 1fr">
+            <Grid templateColumns="1.25fr 1fr">
               <GridItem>
                 <Text
                   as="h2"
@@ -128,7 +129,7 @@ function Lists() {
 
               <GridItem display="flex" alignItems="center">
                 <ExpenseProvider listId={list.__ref.id}>
-                  <ListStats />
+                  <ListStats users={list.users} />
                 </ExpenseProvider>
               </GridItem>
             </Grid>
@@ -143,7 +144,11 @@ function Lists() {
 
 export default Lists;
 
-function ListStats() {
+interface ListStatsProps {
+  users: string[];
+}
+
+function ListStats({ users }: ListStatsProps) {
   const { user } = useAuth();
   const { expenses } = useExpense();
 
@@ -155,41 +160,61 @@ function ListStats() {
     return null;
   }
 
-  const { diffGroup, diffToEachParticipant } = calculateLogStats(
-    user,
+  const { userOwes, owedToUser } = calculateLogStatsOfUser(
+    user.uid,
+    users,
     expenses
+  );
+
+  const userElement = <ProfileAvatar uid={user.uid} boxSize="18px" />;
+  const groupElement = (
+    <Icon as={UserGroupIcon} boxSize="16px" color="gray.500" />
   );
 
   return (
     <Grid templateColumns="1fr 1fr" rowGap="2" width="full">
-      <GridItem display="flex" justifyContent="flex-start" alignItems="center">
-        <Icon
-          as={UserGroupIcon}
-          boxSize="16px"
-          marginRight={1}
-          color="gray.500"
-        />
+      <GridItem
+        as={HStack}
+        spacing={1}
+        justifyContent="flex-start"
+        alignItems="center"
+      >
+        {userElement}
+
+        <Icon as={ArrowRight} boxSize="12px" color="gray.500" />
+
+        {groupElement}
       </GridItem>
 
       <GridItem display="flex" justifyContent="flex-end" alignItems="center">
         <DiffValue
-          diff={diffGroup}
-          lineHeight="14px"
+          diff={userOwes}
+          positiveColor="red.500"
+          lineHeight="12px"
           fontSize={"14px"}
-          height={"14px"}
+          mt="1px"
         />
       </GridItem>
 
-      <GridItem display="flex" justifyContent="flex-start" alignItems="center">
-        <Icon as={UserIcon} boxSize="16px" marginRight={1} color="gray.500" />
+      <GridItem
+        as={HStack}
+        spacing={1}
+        justifyContent="flex-start"
+        alignItems="center"
+      >
+        {groupElement}
+
+        <Icon as={ArrowRight} boxSize="12px" color="gray.500" />
+
+        {userElement}
       </GridItem>
 
       <GridItem display="flex" justifyContent="flex-end" alignItems="center">
         <DiffValue
-          diff={diffToEachParticipant}
-          lineHeight="14px"
+          diff={owedToUser}
+          lineHeight="12px"
           fontSize={"14px"}
-          height={"14px"}
+          mt="1px"
         />
       </GridItem>
     </Grid>
