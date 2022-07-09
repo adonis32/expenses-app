@@ -29,6 +29,7 @@ specifiers:
   react-component-pack: ^1.0.1
   react-dom: ^17.0.0
   react-feather: ^2.0.3
+  react-hyper-scroller: ^3.0.0
   react-router-dom: ^5.1.2
   typescript: ~4.7.4
   vite: ^2.9.13
@@ -48,6 +49,7 @@ dependencies:
   react-component-pack: 1.0.1_react@17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-feather: 2.0.10_react@17.0.2
+  react-hyper-scroller: 3.0.0_sfoxds7t5ydpegc3knd667wn6m
   react-router-dom: 5.3.3_react@17.0.2
   typescript: 4.7.4
 
@@ -5812,6 +5814,16 @@ packages:
       use-sidecar: 1.1.2_sudpmbbyhqtxq6t4xf6jlicdem
     transitivePeerDependencies:
       - '@types/react'
+    dev: false
+
+  /react-hyper-scroller/3.0.0_sfoxds7t5ydpegc3knd667wn6m:
+    resolution: {integrity: sha512-0D1HZb90Hy5BTJ5xFCjgxkaOu6wsfIbl3f0GrdSUzG789gHh1pacE/Dh3gTBzUB8FL6rL5Y3L8HJ7GTTzkTaiw==}
+    peerDependencies:
+      react: ^16.8 || ^17
+      react-dom: ^16.8 || ^17
+    dependencies:
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /react-is/16.13.1:

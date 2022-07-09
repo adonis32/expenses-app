@@ -7,6 +7,8 @@ import ProfileName from "../profile-name";
 import { AddIcon, AtSignIcon, CloseIcon } from "@chakra-ui/icons";
 import { calculateLogStats } from "../../lib/expenses";
 import DiffValue from "../diff-value";
+import HyperScroller from "react-hyper-scroller";
+import { useRef } from "react";
 
 function ExpenseLog() {
   const match = useRouteMatch<{ listId: string }>();
@@ -31,6 +33,8 @@ function ExpenseList({ listId }: ExpenseListProps) {
   const list = useListById(listId);
   const isAdmin = useIsListAdmin(listId);
   const history = useHistory();
+
+  const scrollViewRef = useRef<HTMLDivElement>(null);
 
   if (!user) return null;
 
@@ -81,45 +85,47 @@ function ExpenseList({ listId }: ExpenseListProps) {
         </Flex>
       </Flex>
 
-      <Box flex="1" overflowY="scroll">
-        {expenses.map((expense) => {
-          const date = new Date(expense.createdOn);
+      <Box flex="1" overflowY="scroll" ref={scrollViewRef}>
+        <HyperScroller estimatedItemHeight={98} targetView={scrollViewRef}>
+          {expenses.map((expense) => {
+            const date = new Date(expense.createdOn);
 
-          const itsMine = user.uid === expense.user;
+            const itsMine = user.uid === expense.user;
 
-          return (
-            <Flex
-              key={expense.__ref.id}
-              p={4}
-              alignItems="center"
-              width="100%"
-              borderLeftWidth="6px"
-              borderLeftColor={itsMine ? "blue.500" : "gray.200"}
-              backgroundColor={itsMine ? "blue.50" : "transparent"}
-            >
-              <Flex flexDirection="column" flex="1">
-                <Text as="h2" fontSize="md" fontWeight={500}>
-                  {expense.name}
-                </Text>
-                <Text
-                  as="span"
-                  fontSize="sm"
-                  color={itsMine ? "blue.500" : "gray.500"}
-                  fontWeight={itsMine ? "bold" : undefined}
-                >
-                  <ProfileName uid={expense.user} />
-                </Text>
-                <Text as="span" fontSize="sm" color="gray.500">
-                  {date.toLocaleDateString()} {date.toLocaleTimeString()}
+            return (
+              <Flex
+                key={expense.__ref.id}
+                p={4}
+                alignItems="center"
+                width="100%"
+                borderLeftWidth="6px"
+                borderLeftColor={itsMine ? "blue.500" : "gray.200"}
+                backgroundColor={itsMine ? "blue.50" : "transparent"}
+              >
+                <Flex flexDirection="column" flex="1">
+                  <Text as="h2" fontSize="md" fontWeight={500}>
+                    {expense.name}
+                  </Text>
+                  <Text
+                    as="span"
+                    fontSize="sm"
+                    color={itsMine ? "blue.500" : "gray.500"}
+                    fontWeight={itsMine ? "bold" : undefined}
+                  >
+                    <ProfileName uid={expense.user} />
+                  </Text>
+                  <Text as="span" fontSize="sm" color="gray.500">
+                    {date.toLocaleDateString()} {date.toLocaleTimeString()}
+                  </Text>
+                </Flex>
+
+                <Text as="span" fontSize="lg" color="green.500">
+                  {expense.expense}€
                 </Text>
               </Flex>
-
-              <Text as="span" fontSize="lg" color="green.500">
-                {expense.expense}€
-              </Text>
-            </Flex>
-          );
-        })}
+            );
+          })}
+        </HyperScroller>
       </Box>
 
       <Flex
