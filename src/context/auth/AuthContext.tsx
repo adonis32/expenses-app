@@ -2,8 +2,10 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
+export type User = firebase.User;
+
 export interface AuthContextType {
-  user: firebase.User | null;
+  user: User | null;
   loading: boolean;
 }
 
@@ -21,7 +23,7 @@ interface AuthProviderProps {
 }
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<firebase.User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

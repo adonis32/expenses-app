@@ -1,11 +1,12 @@
-import React from "react";
 import { useRouteMatch, useHistory } from "react-router-dom";
-import ExpenseProvider, { useExpense, Expense } from "../../context/expense";
+import ExpenseProvider, { useExpense } from "../../context/expense";
 import { Box, Heading, Text, Flex, IconButton } from "@chakra-ui/react";
 import { useListById, useIsListAdmin } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import ProfileName from "../profile-name";
 import { AddIcon, AtSignIcon, CloseIcon } from "@chakra-ui/icons";
+import { calculateLogStats } from "../../lib/expenses";
+import DiffValue from "../diff-value";
 
 function ExpenseLog() {
   const match = useRouteMatch<{ listId: string }>();
@@ -33,36 +34,10 @@ function ExpenseList({ listId }: ExpenseListProps) {
 
   if (!user) return null;
 
-  const groupedExpenses = expenses.reduce((prev, next) => {
-    const prevExpenses = prev[next.user] ?? [];
-
-    return {
-      ...prev,
-      [next.user]: [...prevExpenses, next],
-    };
-  }, {} as Record<string, Expense[]>);
-
-  const { [user.uid]: userExpenses = [], ...otherUserExpenses } =
-    groupedExpenses;
-
-  const otherUsersTotalEntries = Object.entries(otherUserExpenses).map(
-    ([user, expenses]) => {
-      return [user, expensesTotal(expenses)];
-    }
+  const { userTotal, diffGroup, diffToEachParticipant } = calculateLogStats(
+    user,
+    expenses
   );
-
-  const otherUsersTotal: Record<string, number> = Object.fromEntries(
-    otherUsersTotalEntries
-  );
-
-  const otherUsersTotalMedian =
-    Object.values(otherUsersTotal).reduce((prev, next) => prev + next, 0) /
-    otherUsersTotalEntries.length;
-
-  const userTotal = expensesTotal(userExpenses);
-  const diffGroup = userTotal - otherUsersTotalMedian;
-  const diffToEachParticipant =
-    diffGroup / (Object.keys(otherUsersTotal).length + 1);
 
   return (
     <Flex height="100%" flexDirection="column">
@@ -182,37 +157,11 @@ function ExpenseList({ listId }: ExpenseListProps) {
             {Math.fround(userTotal).toFixed(2)}€
           </Text>
 
-          <DiffValue diff={diffGroup} />
+          <DiffValue diff={diffGroup} fontSize="md" pt={1} />
 
-          <DiffValue diff={diffToEachParticipant} />
+          <DiffValue diff={diffToEachParticipant} fontSize="md" pt={1} />
         </Flex>
       </Flex>
     </Flex>
   );
-}
-
-function DiffValue({ diff }: { diff: number }) {
-  const value = isNaN(diff) ? 0 : Number(diff.toFixed(2));
-  let color: string;
-
-  switch (true) {
-    case value > 0:
-      color = "green.400";
-      break;
-    case value < 0:
-      color = "red.400";
-      break;
-    default:
-      color = "gray.500";
-  }
-
-  return (
-    <Text as="span" fontSize="md" pt={1} color={color}>
-      {value}€
-    </Text>
-  );
-}
-
-function expensesTotal(expenses: Expense[]) {
-  return expenses.reduce((prev, next) => prev + next.expense, 0);
 }

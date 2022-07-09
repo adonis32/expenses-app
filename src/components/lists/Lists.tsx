@@ -10,11 +10,18 @@ import {
   Spacer,
   VStack,
   AvatarGroup,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { Link, useHistory } from "react-router-dom";
 import Logo from "../logo";
 import { PlusCircle } from "react-feather";
 import ProfileAvatar from "../profile-avatar";
+import ExpenseProvider, { useExpense } from "../../context/expense";
+import { useAuth } from "../../context/auth";
+import DiffValue from "../diff-value";
+import { calculateLogStats } from "../../lib/expenses";
+import { User as UserIcon, Users as UserGroupIcon } from "react-feather";
 
 function Lists() {
   const { lists } = useList();
@@ -98,24 +105,34 @@ function Lists() {
 
             <Spacer h={4} />
 
-            <Text
-              as="h2"
-              lineHeight="1"
-              fontSize={"12px"}
-              height={"12px"}
-              fontWeight={500}
-              color="gray.500"
-            >
-              Members
-            </Text>
+            <Grid templateColumns="2fr 1fr">
+              <GridItem>
+                <Text
+                  as="h2"
+                  lineHeight="1"
+                  fontSize={"12px"}
+                  height={"12px"}
+                  fontWeight={500}
+                  color="gray.500"
+                >
+                  Members
+                </Text>
 
-            <Spacer h={2} />
+                <Spacer h={2} />
 
-            <AvatarGroup size="sm" max={3}>
-              {list.users.map((user) => (
-                <ProfileAvatar key={user} uid={user} />
-              ))}
-            </AvatarGroup>
+                <AvatarGroup size="sm" max={3}>
+                  {list.users.map((user) => (
+                    <ProfileAvatar key={user} uid={user} />
+                  ))}
+                </AvatarGroup>
+              </GridItem>
+
+              <GridItem display="flex" alignItems="center">
+                <ExpenseProvider listId={list.__ref.id}>
+                  <ListStats />
+                </ExpenseProvider>
+              </GridItem>
+            </Grid>
           </Box>
         ))}
       </VStack>
@@ -124,3 +141,56 @@ function Lists() {
 }
 
 export default Lists;
+
+function ListStats() {
+  const { user } = useAuth();
+  const { expenses } = useExpense();
+
+  if (!user) {
+    return null;
+  }
+
+  if (!expenses.length) {
+    return null;
+  }
+
+  const { diffGroup, diffToEachParticipant } = calculateLogStats(
+    user,
+    expenses
+  );
+
+  return (
+    <Grid templateColumns="1fr 1fr" rowGap="2" width="full">
+      <GridItem display="flex" justifyContent="flex-start" alignItems="center">
+        <Icon
+          as={UserGroupIcon}
+          boxSize="16px"
+          marginRight={1}
+          color="gray.500"
+        />
+      </GridItem>
+
+      <GridItem display="flex" justifyContent="flex-end" alignItems="center">
+        <DiffValue
+          diff={diffGroup}
+          lineHeight="14px"
+          fontSize={"14px"}
+          height={"14px"}
+        />
+      </GridItem>
+
+      <GridItem display="flex" justifyContent="flex-start" alignItems="center">
+        <Icon as={UserIcon} boxSize="16px" marginRight={1} color="gray.500" />
+      </GridItem>
+
+      <GridItem display="flex" justifyContent="flex-end" alignItems="center">
+        <DiffValue
+          diff={diffToEachParticipant}
+          lineHeight="14px"
+          fontSize={"14px"}
+          height={"14px"}
+        />
+      </GridItem>
+    </Grid>
+  );
+}
