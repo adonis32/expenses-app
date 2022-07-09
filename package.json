@@ -25,9 +25,15 @@
     "dev": "vite",
     "build": "vite build",
     "lint:base": "eslint --ext .ts,.tsx",
-    "lint": "yarn lint:base src",
-    "fmt": "yarn lint:base --fix && prettier --write 'src/**/*.{ts,tsx,css}'",
+    "lint": "pnpm lint:base src",
+    "fmt": "pnpm lint:base --fix && prettier --write 'src/**/*.{ts,tsx,css}'",
     "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "pnpm lint:base --fix",
+      "prettier --write"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app",
