@@ -5,11 +5,6 @@
   command = "npx pnpm install --store=node_modules/.pnpm-store && npx pnpm build"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-[[redirects]]
   from = "/js/script.js"
   to = "https://plausible.io/js/plausible.js"
   status = 200
@@ -20,3 +15,9 @@
   to = "https://plausible.io/api/event"
   status = 202
   force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
