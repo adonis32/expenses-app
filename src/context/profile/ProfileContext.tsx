@@ -38,7 +38,6 @@ function ProfileProvider({ children }: ProfileProviderProps) {
 
     fetchingRef.current[uid] = true;
 
-    console.log("Fetching profile for", uid);
     const profileDoc = await firebase.firestore().doc(`profiles/${uid}`).get();
 
     fetchingRef.current[uid] = false;
