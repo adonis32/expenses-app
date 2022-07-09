@@ -136,6 +136,8 @@ function Lists() {
           </Box>
         ))}
       </VStack>
+
+      <Spacer h={6} />
     </Box>
   );
 }
