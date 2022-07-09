@@ -14,10 +14,11 @@ import { useListById, useIsListAdmin } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import ProfileName from "../profile-name";
 import { AddIcon, AtSignIcon, CloseIcon } from "@chakra-ui/icons";
-import { calculateLogStatsOfUser } from "../../lib/expenses";
+import { calculateLogStatsOfUser, convertToCents } from "../../lib/expenses";
 import HyperScroller from "react-hyper-scroller";
 import { ArrowRight } from "react-feather";
 import DiffValue from "../diff-value";
+import Dinero from "dinero.js";
 
 function ExpenseLog() {
   const match = useRouteMatch<{ listId: string }>();
@@ -210,7 +211,15 @@ function ExpenseList({ listId }: ExpenseListProps) {
               </Flex>
 
               <Text as="span" fontSize="lg" color="green.500">
-                {expense.expense}€
+                {Dinero({
+                  amount:
+                    expense.version === 2
+                      ? expense.expense
+                      : convertToCents(expense.expense),
+                  currency: expense.version === 2 ? expense.currency : "EUR",
+                })
+                  .setLocale("es-ES")
+                  .toFormat("$0.00")}
               </Text>
             </Flex>
           );

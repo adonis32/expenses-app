@@ -16,11 +16,11 @@ describe("calculateLogStatsBetweenTwoUsers", () => {
 
     const result = calculateLogStatsBetweenTwoUsers(user, otherUser, expenses);
 
-    expect(result).toEqual({
-      userTotalSplitted: 3,
+    expect(result).toMatchSnapshot(`should match {
+      userTotalSplitted: 300,
       diffSplitted: 0,
       diffUnsplitted: 0,
-    });
+    }`);
   });
 
   test("should return total 1, diffSplitted -2, diffUnsplitted -1 when user ows 1€", () => {
@@ -33,11 +33,11 @@ describe("calculateLogStatsBetweenTwoUsers", () => {
 
     const result = calculateLogStatsBetweenTwoUsers(user, otherUser, expenses);
 
-    expect(result).toEqual({
-      userTotalSplitted: 1,
-      diffSplitted: -2,
-      diffUnsplitted: -1,
-    });
+    expect(result).toMatchSnapshot(`should match {
+      userTotalSplitted: 100,
+      diffSplitted: -200,
+      diffUnsplitted: -100,
+    }`);
   });
 
   test("should return total 3, diffSplitted 2, diffUnsplitted 1 when otherUser ows 1€", () => {
@@ -50,11 +50,11 @@ describe("calculateLogStatsBetweenTwoUsers", () => {
 
     const result = calculateLogStatsBetweenTwoUsers(user, otherUser, expenses);
 
-    expect(result).toEqual({
-      userTotalSplitted: 3,
-      diffSplitted: 2,
-      diffUnsplitted: 1,
-    });
+    expect(result).toMatchSnapshot(`should match {
+      userTotalSplitted: 300,
+      diffSplitted: 200,
+      diffUnsplitted: 100,
+    }`);
   });
 });
 
@@ -71,20 +71,20 @@ describe("calculateLogStatsOfUser", () => {
 
     const result = calculateLogStatsOfUser(user, otherUsers, expenses);
 
-    expect(result.userOwes).toEqual(1.5);
-    expect(result.owedToUser).toEqual(0);
+    expect(result.userOwes).toMatchSnapshot("should be 150");
+    expect(result.owedToUser).toMatchSnapshot("should be 0");
 
-    expect(result.diffs.user2).toEqual({
-      userTotalSplitted: 3,
+    expect(result.diffs.user2).toMatchSnapshot(`should be {
+      userTotalSplitted: 300,
       diffSplitted: 0,
       diffUnsplitted: 0,
-    });
+    }`);
 
-    expect(result.diffs.user3).toEqual({
-      userTotalSplitted: 3,
-      diffSplitted: -3,
-      diffUnsplitted: -1.5,
-    });
+    expect(result.diffs.user3).toMatchSnapshot(`should be {
+      userTotalSplitted: 300,
+      diffSplitted: -300,
+      diffUnsplitted: -150,
+    }`);
   });
 
   test("user2 should owe 2 to user1", () => {
@@ -98,14 +98,13 @@ describe("calculateLogStatsOfUser", () => {
 
     const result = calculateLogStatsOfUser(user, otherUsers, expenses);
 
-    expect(result.userOwes).toEqual(0);
-    expect(result.owedToUser).toEqual(1);
-
-    expect(result.diffs.user2).toEqual({
+    expect(result.userOwes).toMatchSnapshot("should be 0");
+    expect(result.owedToUser).toMatchSnapshot("should be 100");
+    expect(result.diffs.user2).toMatchSnapshot(`should be {
       userTotalSplitted: 3,
       diffSplitted: 2,
       diffUnsplitted: 1,
-    });
+    }`);
   });
 
   test("user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2", () => {
@@ -119,24 +118,22 @@ describe("calculateLogStatsOfUser", () => {
 
     let result = calculateLogStatsOfUser(user, otherUsers, expenses);
 
-    expect(result.userOwes).toEqual(0);
-    expect(result.owedToUser).toEqual(2.5);
-
-    expect(result.diffs.user2).toEqual({
-      userTotalSplitted: 3,
-      diffSplitted: 2,
-      diffUnsplitted: 1,
-    });
+    expect(result.userOwes).toMatchSnapshot("should be 0");
+    expect(result.owedToUser).toMatchSnapshot("should be 250");
+    expect(result.diffs.user2).toMatchSnapshot(`should be {
+      userTotalSplitted: 300,
+      diffSplitted: 200,
+      diffUnsplitted: 100,
+    }`);
 
     result = calculateLogStatsOfUser("user3", ["user2", "user1"], expenses);
 
-    expect(result.userOwes).toEqual(2);
-    expect(result.owedToUser).toEqual(0);
-
-    expect(result.diffs.user2).toEqual({
+    expect(result.userOwes).toMatchSnapshot("should be 200");
+    expect(result.owedToUser).toMatchSnapshot("should be 0");
+    expect(result.diffs.user2).toMatchSnapshot(`should be {
       userTotalSplitted: 0,
-      diffSplitted: -1,
-      diffUnsplitted: -0.5,
-    });
+      diffSplitted: -100,
+      diffUnsplitted: -50,
+    }`);
   });
 });

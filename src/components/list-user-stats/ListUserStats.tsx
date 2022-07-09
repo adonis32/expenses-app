@@ -18,6 +18,7 @@ import { calculateLogStatsOfUser } from "../../lib/expenses";
 import DiffValue from "../diff-value";
 import ProfileAvatar from "../profile-avatar";
 import ProfileName from "../profile-name";
+import Dinero from "dinero.js";
 
 function ListUserStats() {
   const match = useRouteMatch<{ listId: string }>();
@@ -51,27 +52,29 @@ function ListUserStatsUi({ listId }: ListUserStatsUiProps) {
     expenses
   );
 
-  console.log(diffs);
-
   const userOwesMap = Object.entries(diffs)
     .filter(([uid, diff]) => {
-      return diff.diffUnsplitted < 0;
+      return diff.diffUnsplitted.getAmount() < 0;
     })
     .map(([uid, diff]) => {
       return {
         uid,
-        amount: Math.abs(diff.diffUnsplitted),
+        amount: Dinero({
+          amount: Math.abs(diff.diffUnsplitted.getAmount()),
+        }),
       };
     });
 
   const owedToUserMap = Object.entries(diffs)
     .filter(([uid, diff]) => {
-      return diff.diffUnsplitted > 0;
+      return diff.diffUnsplitted.getAmount() > 0;
     })
     .map(([uid, diff]) => {
       return {
         uid,
-        amount: Math.abs(diff.diffUnsplitted),
+        amount: Dinero({
+          amount: Math.abs(diff.diffUnsplitted.getAmount()),
+        }),
       };
     });
 
@@ -148,7 +151,7 @@ function ListUserStatsUi({ listId }: ListUserStatsUiProps) {
 
 interface ActionableItemProps {
   uid: string;
-  amount: number;
+  amount: Dinero.Dinero;
 }
 
 function ActionableItem({ uid, amount }: ActionableItemProps) {
@@ -199,7 +202,7 @@ function ActionableItem({ uid, amount }: ActionableItemProps) {
 
 interface NonActionableItemProps {
   uid: string;
-  amount: number;
+  amount: Dinero.Dinero;
 }
 
 function NonActionableItem({ uid, amount }: NonActionableItemProps) {

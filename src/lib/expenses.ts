@@ -1,7 +1,8 @@
 import type { Expense } from "../context/expense";
+import Dinero from "dinero.js";
 
 export type ExpenseUser = string;
-export type ExpenseInput = Pick<Expense, "expense" | "user">;
+export type ExpenseInput = Pick<Expense, "expense" | "user" | "version">;
 
 export function calculateLogStatsBetweenTwoUsers(
   userUid: ExpenseUser,
@@ -27,13 +28,13 @@ export function calculateLogStatsBetweenTwoUsers(
   const userTotalSplitted = expensesTotal(userExpenses);
   const otherUserTotalSplitted = expensesTotal(otherUserExpenses);
 
-  const diffSplitted = userTotalSplitted - otherUserTotalSplitted;
-  const diffUnsplitted = diffSplitted / 2;
+  const diffSplitted = userTotalSplitted.subtract(otherUserTotalSplitted);
+  const diffUnsplitted = diffSplitted.divide(2);
 
   return {
     userTotalSplitted,
-    diffSplitted: isNaN(diffSplitted) ? 0 : diffSplitted,
-    diffUnsplitted: isNaN(diffUnsplitted) ? 0 : diffUnsplitted,
+    diffSplitted,
+    diffUnsplitted,
   };
 }
 
@@ -58,15 +59,20 @@ export function calculateLogStatsOfUser(
     expenses.filter((expense) => expense.user === userUid)
   );
 
+  const zero = Dinero({ amount: 0 });
+
   const userOwes = Object.values(diffs)
-    .filter((diff) => diff.diffUnsplitted < 0)
+    .filter((diff) => diff.diffUnsplitted.lessThan(zero))
     .map((diff) => diff.diffUnsplitted)
-    .reduce((prev, next) => prev + Math.abs(next), 0);
+    .reduce(
+      (prev, next) => prev.add(Dinero({ amount: Math.abs(next.getAmount()) })),
+      Dinero({ amount: 0 })
+    );
 
   const owedToUser = Object.values(diffs)
-    .filter((diff) => diff.diffUnsplitted >= 0)
+    .filter((diff) => diff.diffSplitted.greaterThan(zero))
     .map((diff) => diff.diffUnsplitted)
-    .reduce((prev, next) => prev + next, 0);
+    .reduce((prev, next) => prev.add(next), Dinero({ amount: 0 }));
 
   return {
     userTotalSplitted,
@@ -76,6 +82,28 @@ export function calculateLogStatsOfUser(
   };
 }
 
-function expensesTotal(expenses: Pick<ExpenseInput, "expense">[]) {
-  return expenses.reduce((prev, next) => prev + next.expense, 0);
+function expensesTotal(expenses: Pick<ExpenseInput, "expense" | "version">[]) {
+  return expenses.reduce(
+    (prev, next) =>
+      prev.add(
+        Dinero({
+          amount: safeExpenseAmount(next),
+        })
+      ),
+    Dinero({ amount: 0 })
+  );
+}
+
+export function convertToCents(amount: number) {
+  return String(amount).includes(".")
+    ? Number(amount.toFixed(2).replace(".", ""))
+    : amount * 100;
+}
+
+export function safeExpenseAmount(
+  expense: Pick<ExpenseInput, "expense" | "version">
+) {
+  return expense.version === 2
+    ? expense.expense
+    : convertToCents(expense.expense);
 }

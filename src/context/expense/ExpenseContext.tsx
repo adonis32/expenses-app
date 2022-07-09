@@ -4,13 +4,25 @@ import { useAuth } from "../auth";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
-export interface Expense {
+interface ExpenseBase {
   name: string;
   expense: number;
   user: string;
   createdOn: number;
   __ref: firebase.firestore.DocumentReference;
 }
+
+export interface ExpenseV1 extends ExpenseBase {
+  version?: undefined;
+}
+
+export interface ExpenseV2 extends ExpenseBase {
+  version: 2;
+  paidBy: { [user: string]: number };
+  currency: "EUR";
+}
+
+export type Expense = ExpenseV1 | ExpenseV2;
 
 export interface ExpenseContextType {
   expenses: Expense[];

@@ -15,6 +15,7 @@ import { useAuth } from "../../context/auth";
 import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
 import { offlineAwait } from "../../lib/offline";
 import CurrencyInput, { CurrencyInputProps } from "react-currency-input-field";
+import { convertToCents } from "../../lib/expenses";
 
 function CreateExpense() {
   const match = useRouteMatch<{ listId: string }>();
@@ -46,12 +47,19 @@ function CreateExpense() {
 
     setLoading(true);
 
+    const paidBy = Object.fromEntries(
+      list.users.map((user) => [user, 1 / list.users.length])
+    );
+
     await offlineAwait(
       ref.collection("expenses").add({
         name,
-        expense,
+        expense: convertToCents(expense),
         user: user.uid,
+        paidBy,
         createdOn: Date.now(),
+        version: 2,
+        currency: "EUR",
       })
     );
 

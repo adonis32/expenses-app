@@ -1,0 +1,365 @@
+// Vitest Snapshot v1
+
+exports[`calculateLogStatsBetweenTwoUsers > should return total 1, diffSplitted -2, diffUnsplitted -1 when user ows 1€ > should match {
+      userTotalSplitted: 100,
+      diffSplitted: -200,
+      diffUnsplitted: -100,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": -200,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": -100,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 100,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`calculateLogStatsBetweenTwoUsers > should return total 3, diffSplitted 0, diffUnsplitted 0 when both users made the same expenses > should match {
+      userTotalSplitted: 300,
+      diffSplitted: 0,
+      diffUnsplitted: 0,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": 0,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": 0,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 300,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`calculateLogStatsBetweenTwoUsers > should return total 3, diffSplitted 2, diffUnsplitted 1 when otherUser ows 1€ > should match {
+      userTotalSplitted: 300,
+      diffSplitted: 200,
+      diffUnsplitted: 100,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": 200,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": 100,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 300,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`calculateLogStatsOfUser > should owe 0 to user2, and 1.5 to user3 > should be {
+      userTotalSplitted: 300,
+      diffSplitted: -300,
+      diffUnsplitted: -150,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": -300,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": -150,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 300,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`calculateLogStatsOfUser > should owe 0 to user2, and 1.5 to user3 > should be {
+      userTotalSplitted: 300,
+      diffSplitted: 0,
+      diffUnsplitted: 0,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": 0,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": 0,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 300,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`calculateLogStatsOfUser > should owe 0 to user2, and 1.5 to user3 > should be 0 1`] = `
+{
+  "amount": 0,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > should owe 0 to user2, and 1.5 to user3 > should be 150 1`] = `
+{
+  "amount": 150,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1 > should be {
+      userTotalSplitted: 3,
+      diffSplitted: 2,
+      diffUnsplitted: 1,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": 200,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": 100,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 300,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1 > should be 0 1`] = `
+{
+  "amount": 0,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1 > should be 100 1`] = `
+{
+  "amount": 100,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1 1`] = `
+{
+  "amount": 0,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1 2`] = `
+{
+  "amount": 100,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1 3`] = `
+{
+  "diffSplitted": {
+    "amount": 200,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": 100,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 300,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 > should be {
+      userTotalSplitted: 0,
+      diffSplitted: -100,
+      diffUnsplitted: -50,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": -100,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": -50,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 0,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 > should be {
+      userTotalSplitted: 300,
+      diffSplitted: 200,
+      diffUnsplitted: 100,
+    } 1`] = `
+{
+  "diffSplitted": {
+    "amount": 200,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": 100,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 300,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 > should be 0 1`] = `
+{
+  "amount": 0,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 > should be 0 2`] = `
+{
+  "amount": 0,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 > should be 200 1`] = `
+{
+  "amount": 200,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 > should be 250 1`] = `
+{
+  "amount": 250,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 1`] = `
+{
+  "amount": 0,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 2`] = `
+{
+  "amount": 250,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 3`] = `
+{
+  "diffSplitted": {
+    "amount": 200,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": 100,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 300,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 4`] = `
+{
+  "amount": 200,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 5`] = `
+{
+  "amount": 0,
+  "currency": "USD",
+  "precision": 2,
+}
+`;
+
+exports[`calculateLogStatsOfUser > user2 should owe 2 to user1, and user3 should owe 1.5 to user1, but user3 should only owe 0.5 to user2 6`] = `
+{
+  "diffSplitted": {
+    "amount": -100,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "diffUnsplitted": {
+    "amount": -50,
+    "currency": "USD",
+    "precision": 2,
+  },
+  "userTotalSplitted": {
+    "amount": 0,
+    "currency": "USD",
+    "precision": 2,
+  },
+}
+`;

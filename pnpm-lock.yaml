@@ -11,11 +11,13 @@ specifiers:
   '@chakra-ui/theme-tools': ^2.0.2
   '@emotion/react': ^11.0.0
   '@emotion/styled': ^11.0.0
+  '@types/dinero.js': ^1.9.0
   '@types/nanoid': ^3.0.0
   '@types/react': ^17.0.0
   '@types/react-dom': ^17.0.0
   '@types/react-router-dom': ^5.1.3
   '@vitejs/plugin-react': ^1.3.2
+  dinero.js: ^1.9.1
   eslint: ^8.0.0
   eslint-config-react-app: ^7.0.1
   firebase: ^9.8.4
@@ -43,6 +45,7 @@ dependencies:
   '@chakra-ui/theme-tools': 2.0.2
   '@emotion/react': 11.9.3_sudpmbbyhqtxq6t4xf6jlicdem
   '@emotion/styled': 11.9.3_ba4fzwsi6hv66gff7snxy5lvzm
+  dinero.js: 1.9.1
   firebase: 9.8.4
   focus-visible: 5.2.0
   framer-motion: 4.1.17_sfoxds7t5ydpegc3knd667wn6m
@@ -57,6 +60,7 @@ dependencies:
   typescript: 4.7.4
 
 devDependencies:
+  '@types/dinero.js': 1.9.0
   '@types/nanoid': 3.0.0
   '@types/react': 17.0.47
   '@types/react-dom': 17.0.17
@@ -3142,6 +3146,10 @@ packages:
     resolution: {integrity: sha512-/zPMqDkzSZ8t3VtxOa4KPq7uzzW978M9Tvh+j7GHKuo6k6GTLxPJ4J5gE5cjfJ26pnXst0N5Hax8Sr0T2Mi9zQ==}
     dev: true
 
+  /@types/dinero.js/1.9.0:
+    resolution: {integrity: sha512-H2XdE6N/A2wJ/TJhGqeHDMUhCaey2R/Lcq9ichGBncKsFGvqrroXZWPNdDkCcgQOBPoCD4n9QuSBUC/35wuJiw==}
+    dev: true
+
   /@types/estree/0.0.39:
     resolution: {integrity: sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==}
     dev: true
@@ -3960,6 +3968,10 @@ packages:
 
   /detect-node-es/1.1.0:
     resolution: {integrity: sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==}
+    dev: false
+
+  /dinero.js/1.9.1:
+    resolution: {integrity: sha512-1HXiF2vv3ZeRQ23yr+9lFxj/PbZqutuYWJnE0qfCB9xYBPnuaJ8lXtli1cJM0TvUXW1JTOaePldmqN5JVNxKSA==}
     dev: false
 
   /dir-glob/3.0.1:
