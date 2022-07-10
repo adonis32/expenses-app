@@ -19,6 +19,7 @@ import DiffValue from "../diff-value";
 import ProfileAvatar from "../profile-avatar";
 import ProfileName from "../profile-name";
 import Dinero from "dinero.js";
+import { CreateExpenseLocationState } from "../create-expense";
 
 function ListUserStats() {
   const match = useRouteMatch<{ listId: string }>();
@@ -46,8 +47,10 @@ function ListUserStatsUi({ listId }: ListUserStatsUiProps) {
   if (!user) return null;
   if (!list) return null;
 
+  const userUid = user.uid;
+
   const { owedToUser, userOwes, diffs } = calculateLogStatsOfUser(
-    user.uid,
+    userUid,
     list.users,
     expenses
   );
@@ -77,6 +80,20 @@ function ListUserStatsUi({ listId }: ListUserStatsUiProps) {
         }),
       };
     });
+
+  function markAsPaid(uid: string, amount: number) {
+    const state: CreateExpenseLocationState = {
+      splittedWith: {
+        [uid]: 0,
+        [userUid]: 1,
+      },
+      amount,
+      name: "Expenses debt payment",
+      autoCreate: true,
+    };
+
+    history.push(`/list/${listId}/create`, state);
+  }
 
   return (
     <Box margin="0 auto" maxWidth="4xl" height="100%" p="8">
@@ -119,7 +136,12 @@ function ListUserStatsUi({ listId }: ListUserStatsUiProps) {
 
         <VStack>
           {userOwesMap.map(({ uid, amount }) => (
-            <ActionableItem key={uid} uid={uid} amount={amount} />
+            <ActionableItem
+              key={uid}
+              uid={uid}
+              amount={amount}
+              onMarkAsCompleted={() => markAsPaid(uid, amount.getAmount())}
+            />
           ))}
         </VStack>
       </Box>
@@ -152,9 +174,14 @@ function ListUserStatsUi({ listId }: ListUserStatsUiProps) {
 interface ActionableItemProps {
   uid: string;
   amount: Dinero.Dinero;
+  onMarkAsCompleted: () => void;
 }
 
-function ActionableItem({ uid, amount }: ActionableItemProps) {
+function ActionableItem({
+  uid,
+  amount,
+  onMarkAsCompleted,
+}: ActionableItemProps) {
   return (
     <Box p="4" width="full" flexWrap="wrap" bgColor="gray.50" rounded="lg">
       <Text
@@ -192,6 +219,7 @@ function ActionableItem({ uid, amount }: ActionableItemProps) {
           variant="link"
           colorScheme="green"
           rightIcon={<Icon as={Check} />}
+          onClick={onMarkAsCompleted}
         >
           Mark as completed
         </Button>

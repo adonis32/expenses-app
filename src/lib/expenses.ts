@@ -16,8 +16,8 @@ export function calculateLogStatsBetweenTwoUsers(
     .filter((expense) =>
       expense.version === 2
         ? [userUid, otherUserUid].includes(expense.paidBy) &&
-          expense.splittedWith[userUid] &&
-          expense.splittedWith[otherUserUid]
+          userUid in expense.splittedWith &&
+          otherUserUid in expense.splittedWith
         : [userUid, otherUserUid].includes(expense.user)
     )
     .reduce((prev, next) => {
@@ -35,21 +35,38 @@ export function calculateLogStatsBetweenTwoUsers(
     [otherUserUid]: otherUserExpenses = [],
   } = groupedExpenses;
 
-  const userDebtWithOtherUser = getSplitTotal(
-    otherUserExpenses,
-    userUid,
-    v1Split
-  );
-  const otherUserDebtWithUser = getSplitTotal(
-    userExpenses,
-    otherUserUid,
-    v1Split
-  );
+  /**
+   * What U2 has to pay to U1
+   */
+  let whatU2HasToPayToU1 = getSplitTotal(userExpenses, otherUserUid, v1Split);
 
-  const diffUnsplitted = otherUserDebtWithUser.subtract(userDebtWithOtherUser);
+  /**
+   * What U1 has to pay to U2
+   */
+  let whatU1HasToPayToU2 = getSplitTotal(otherUserExpenses, userUid, v1Split);
+
+  if (whatU2HasToPayToU1.getAmount() === 0) {
+    whatU2HasToPayToU1 = getSplitTotal(
+      userExpenses,
+      otherUserUid,
+      v1Split,
+      true
+    );
+  }
+
+  if (whatU1HasToPayToU2.getAmount() === 0) {
+    whatU1HasToPayToU2 = getSplitTotal(
+      otherUserExpenses,
+      userUid,
+      v1Split,
+      true
+    );
+  }
+
+  const diff = whatU2HasToPayToU1.subtract(whatU1HasToPayToU2);
 
   return {
-    diffUnsplitted,
+    diffUnsplitted: diff,
   };
 }
 
@@ -108,7 +125,12 @@ export function safeExpenseAmount(
     : convertToCents(expense.expense);
 }
 
-function getSplitTotal(expenses: ExpenseInput[], uid: string, v1Split: number) {
+function getSplitTotal(
+  expenses: ExpenseInput[],
+  uid: string,
+  v1Split: number,
+  reverse = false
+) {
   return expenses.reduce((prev, next) => {
     let amount = Dinero({
       amount: safeExpenseAmount(next),
@@ -117,7 +139,9 @@ function getSplitTotal(expenses: ExpenseInput[], uid: string, v1Split: number) {
     if (!next.version) {
       amount = amount.multiply(v1Split);
     } else {
-      amount = amount.multiply(next.splittedWith[uid]);
+      amount = amount.multiply(
+        reverse ? 1 - next.splittedWith[uid] : next.splittedWith[uid]
+      );
     }
 
     return prev.add(amount);

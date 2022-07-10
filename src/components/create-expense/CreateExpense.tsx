@@ -9,7 +9,7 @@ import {
   Spacer,
   useToast,
 } from "@chakra-ui/react";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import { useListById } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
@@ -17,14 +17,23 @@ import { offlineAwait } from "../../lib/offline";
 import CurrencyInput, { CurrencyInputProps } from "react-currency-input-field";
 import { convertToCents } from "../../lib/expenses";
 import { ExpenseV2 } from "../../context/expense";
+import LoadingScreen from "../loading-screen";
+
+export interface CreateExpenseLocationState {
+  name?: string;
+  amount?: number;
+  splittedWith?: Record<string, number>;
+  autoCreate?: boolean;
+}
 
 function CreateExpense() {
   const match = useRouteMatch<{ listId: string }>();
   const { listId } = match.params;
   const history = useHistory();
+  const { state = {} } = useLocation<CreateExpenseLocationState>();
   const list = useListById(listId);
-  const [name, setName] = useState("");
-  const [expense, setExpense] = useState(1);
+  const [name, setName] = useState(state.name ?? "");
+  const [expense, setExpense] = useState(state.amount ?? 1);
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
@@ -48,13 +57,15 @@ function CreateExpense() {
 
     setLoading(true);
 
-    const splittedWith = Object.fromEntries(
-      list.users.map((user) => [user, 1 / list.users.length])
-    );
+    const splittedWith =
+      state.splittedWith ||
+      Object.fromEntries(
+        list.users.map((user) => [user, 1 / list.users.length])
+      );
 
     const raw: Omit<ExpenseV2, "__ref"> = {
       name,
-      expense: convertToCents(expense),
+      expense,
       user: user.uid,
       paidBy: user.uid,
       splittedWith,
@@ -68,7 +79,20 @@ function CreateExpense() {
     setLoading(false);
 
     history.goBack();
-  }, [name, expense, list, user, history, toast]);
+  }, [name, expense, list, user, history, toast, state.splittedWith]);
+
+  const didAutoCreateRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (state.autoCreate && !didAutoCreateRef.current) {
+      didAutoCreateRef.current = true;
+      createExpense();
+    }
+  }, [state.autoCreate, createExpense]);
+
+  if (state.autoCreate) {
+    return <LoadingScreen />;
+  }
 
   const intl = new Intl.NumberFormat("es-ES", {
     style: "currency",
@@ -85,7 +109,7 @@ function CreateExpense() {
     const float = values?.float;
 
     if (float) {
-      setExpense(float);
+      setExpense(convertToCents(float));
     }
   };
 

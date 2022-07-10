@@ -190,6 +190,100 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
 
     expectDinero(result.diffUnsplitted).toEqual(0);
   });
+
+  test("should return diffUnsplitted=-50 when user1 pays something for themselves", () => {
+    const user = "user1";
+    const otherUser = "user2";
+    const expenses: ExpenseInput[] = [
+      {
+        version: 2,
+        expense: 200,
+        user: "user1",
+        paidBy: "user1",
+        splittedWith: { user1: 1 },
+      },
+      {
+        version: 2,
+        expense: 100,
+        user: "user2",
+        paidBy: "user2",
+        splittedWith: { user1: 0.5, user2: 0.5 },
+      },
+    ];
+
+    const result = calculateLogStatsBetweenTwoUsers(
+      user,
+      otherUser,
+      expenses,
+      0.5
+    );
+
+    expectDinero(result.diffUnsplitted).toEqual(-50);
+  });
+
+  test("should return diffUnsplitted=50 when user1 pays something for themselves", () => {
+    const user = "user2";
+    const otherUser = "user1";
+    const expenses: ExpenseInput[] = [
+      {
+        version: 2,
+        expense: 200,
+        user: "user1",
+        paidBy: "user1",
+        splittedWith: { user1: 1 },
+      },
+      {
+        version: 2,
+        expense: 100,
+        user: "user2",
+        paidBy: "user2",
+        splittedWith: { user1: 0.5, user2: 0.5 },
+      },
+    ];
+
+    const result = calculateLogStatsBetweenTwoUsers(
+      user,
+      otherUser,
+      expenses,
+      0.5
+    );
+
+    expectDinero(result.diffUnsplitted).toEqual(50);
+  });
+
+  test("should return diffUnsplitted=0 when user2 pays a debt to user1", () => {
+    const user = "user1";
+    const otherUser = "user2";
+    const expenses: ExpenseInput[] = [
+      {
+        version: 2,
+        expense: 50,
+        user: "user2",
+        paidBy: "user2",
+        splittedWith: { user1: 0, user2: 1 },
+      },
+      {
+        version: 2,
+        expense: 100,
+        user: "user1",
+        paidBy: "user1",
+        splittedWith: { user1: 0.5, user2: 0.5 },
+      },
+    ];
+
+    let result = calculateLogStatsBetweenTwoUsers(
+      user,
+      otherUser,
+      expenses,
+      0.5
+    );
+
+    expectDinero(result.diffUnsplitted).toEqual(0);
+
+    result = calculateLogStatsBetweenTwoUsers(otherUser, user, expenses, 0.5);
+
+    expectDinero(result.diffUnsplitted).toEqual(0);
+  });
 });
 
 describe("calculateLogStatsOfUser", () => {
