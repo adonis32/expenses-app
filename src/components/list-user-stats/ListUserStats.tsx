@@ -83,7 +83,7 @@ function ListUserStatsUi({ listId }: ListUserStatsUiProps) {
 
   function markAsPaid(uid: string, amount: number) {
     const state: CreateExpenseLocationState = {
-      splittedWith: {
+      paidFor: {
         [uid]: 1,
         [userUid]: 0,
       },

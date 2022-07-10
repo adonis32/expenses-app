@@ -19,7 +19,7 @@ export interface ExpenseV1 extends ExpenseBase {
 export interface ExpenseV2 extends ExpenseBase {
   version: 2;
   paidBy: string;
-  splittedWith: { [user: string]: number };
+  paidFor: { [user: string]: number };
   currency: "EUR";
 }
 

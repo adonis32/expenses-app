@@ -73,21 +73,21 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 100,
         user: "user1",
         paidBy: "user1",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
       {
         version: 2,
         expense: 200,
         user: "user1",
         paidBy: "user1",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
       {
         version: 2,
         expense: 300,
         user: "user2",
         paidBy: "user2",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
     ];
 
@@ -110,14 +110,14 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 100,
         user: "user1",
         paidBy: "user1",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
       {
         version: 2,
         expense: 300,
         user: "user2",
         paidBy: "user2",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
     ];
 
@@ -140,14 +140,14 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 300,
         user: "user1",
         paidBy: "user1",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
       {
         version: 2,
         expense: 100,
         user: "user2",
         paidBy: "user2",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
     ];
 
@@ -170,14 +170,14 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 200,
         user: "user1",
         paidBy: "user1",
-        splittedWith: { user1: 0.75, user2: 0.25 },
+        paidFor: { user1: 0.75, user2: 0.25 },
       },
       {
         version: 2,
         expense: 100,
         user: "user2",
         paidBy: "user2",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
     ];
 
@@ -200,14 +200,14 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 200,
         user: "user1",
         paidBy: "user1",
-        splittedWith: { user1: 1 },
+        paidFor: { user1: 1 },
       },
       {
         version: 2,
         expense: 100,
         user: "user2",
         paidBy: "user2",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
     ];
 
@@ -230,14 +230,14 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 200,
         user: "user1",
         paidBy: "user1",
-        splittedWith: { user1: 1 },
+        paidFor: { user1: 1 },
       },
       {
         version: 2,
         expense: 100,
         user: "user2",
         paidBy: "user2",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
     ];
 
@@ -260,14 +260,14 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 50,
         user: "user2",
         paidBy: "user2",
-        splittedWith: { user1: 1, user2: 0 },
+        paidFor: { user1: 1, user2: 0 },
       },
       {
         version: 2,
         expense: 100,
         user: "user1",
         paidBy: "user1",
-        splittedWith: { user1: 0.5, user2: 0.5 },
+        paidFor: { user1: 0.5, user2: 0.5 },
       },
     ];
 
@@ -295,14 +295,14 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 10000,
         user: user2,
         paidBy: user2,
-        splittedWith: { [user1]: 0.5, [user2]: 0.5 },
+        paidFor: { [user1]: 0.5, [user2]: 0.5 },
       },
       {
         version: 2,
         expense: 10000,
         user: user1,
         paidBy: user1,
-        splittedWith: {
+        paidFor: {
           [user1]: 0.3333333333333333,
           [user2]: 0.3333333333333333,
           [user3]: 0.3333333333333333,
@@ -329,14 +329,14 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 10000,
         user: user2,
         paidBy: user2,
-        splittedWith: { [user1]: 0.5, [user2]: 0.5 },
+        paidFor: { [user1]: 0.5, [user2]: 0.5 },
       },
       {
         version: 2,
         expense: 5000,
         user: user1,
         paidBy: user1,
-        splittedWith: {
+        paidFor: {
           [user1]: 0,
           [user2]: 1,
         },
@@ -346,7 +346,7 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 10000,
         user: user1,
         paidBy: user1,
-        splittedWith: {
+        paidFor: {
           [user1]: 0.3333333333333333,
           [user2]: 0.3333333333333333,
           [user3]: 0.3333333333333333,

@@ -4,7 +4,7 @@ import Dinero from "dinero.js";
 export type ExpenseUser = string;
 export type ExpenseInput =
   | Pick<ExpenseV1, "expense" | "user" | "version">
-  | Pick<ExpenseV2, "expense" | "user" | "version" | "paidBy" | "splittedWith">;
+  | Pick<ExpenseV2, "expense" | "user" | "version" | "paidBy" | "paidFor">;
 
 export function calculateLogStatsBetweenTwoUsers(
   userUid: ExpenseUser,
@@ -16,8 +16,8 @@ export function calculateLogStatsBetweenTwoUsers(
     .filter((expense) =>
       expense.version === 2
         ? [userUid, otherUserUid].includes(expense.paidBy) &&
-          userUid in expense.splittedWith &&
-          otherUserUid in expense.splittedWith
+          userUid in expense.paidFor &&
+          otherUserUid in expense.paidFor
         : [userUid, otherUserUid].includes(expense.user)
     )
     .reduce((prev, next) => {
@@ -122,7 +122,7 @@ function getSplitTotal(
       amount = amount.multiply(v1Split);
     } else {
       amount = amount.multiply(
-        reverse ? 1 - next.splittedWith[uid] : next.splittedWith[uid]
+        reverse ? 1 - next.paidFor[uid] : next.paidFor[uid]
       );
     }
 

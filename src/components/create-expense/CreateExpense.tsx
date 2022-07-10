@@ -22,7 +22,7 @@ import LoadingScreen from "../loading-screen";
 export interface CreateExpenseLocationState {
   name?: string;
   amount?: number;
-  splittedWith?: Record<string, number>;
+  paidFor?: Record<string, number>;
   autoCreate?: boolean;
 }
 
@@ -57,8 +57,8 @@ function CreateExpense() {
 
     setLoading(true);
 
-    const splittedWith =
-      state.splittedWith ||
+    const paidFor =
+      state.paidFor ||
       Object.fromEntries(
         list.users.map((user) => [user, 1 / list.users.length])
       );
@@ -68,7 +68,7 @@ function CreateExpense() {
       expense,
       user: user.uid,
       paidBy: user.uid,
-      splittedWith,
+      paidFor,
       createdOn: Date.now(),
       version: 2,
       currency: "EUR",
@@ -79,7 +79,7 @@ function CreateExpense() {
     setLoading(false);
 
     history.goBack();
-  }, [name, expense, list, user, history, toast, state.splittedWith]);
+  }, [name, expense, list, user, history, toast, state.paidFor]);
 
   const didAutoCreateRef = React.useRef(false);
 
