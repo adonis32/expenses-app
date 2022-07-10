@@ -38,30 +38,12 @@ export function calculateLogStatsBetweenTwoUsers(
   /**
    * What U2 has to pay to U1
    */
-  let whatU2HasToPayToU1 = getSplitTotal(userExpenses, otherUserUid, v1Split);
+  const whatU2HasToPayToU1 = getSplitTotal(userExpenses, otherUserUid, v1Split);
 
   /**
    * What U1 has to pay to U2
    */
-  let whatU1HasToPayToU2 = getSplitTotal(otherUserExpenses, userUid, v1Split);
-
-  if (whatU2HasToPayToU1.getAmount() === 0) {
-    whatU2HasToPayToU1 = getSplitTotal(
-      userExpenses,
-      otherUserUid,
-      v1Split,
-      true
-    );
-  }
-
-  if (whatU1HasToPayToU2.getAmount() === 0) {
-    whatU1HasToPayToU2 = getSplitTotal(
-      otherUserExpenses,
-      userUid,
-      v1Split,
-      true
-    );
-  }
+  const whatU1HasToPayToU2 = getSplitTotal(otherUserExpenses, userUid, v1Split);
 
   const diff = whatU2HasToPayToU1.subtract(whatU1HasToPayToU2);
 

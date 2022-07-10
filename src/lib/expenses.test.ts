@@ -260,7 +260,7 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
         expense: 50,
         user: "user2",
         paidBy: "user2",
-        splittedWith: { user1: 0, user2: 1 },
+        splittedWith: { user1: 1, user2: 0 },
       },
       {
         version: 2,
@@ -313,6 +313,50 @@ describe("ExpenseV2 calculateLogStatsBetweenTwoUsers", () => {
     let result = calculateLogStatsBetweenTwoUsers(user1, user2, expenses, 0.5);
 
     expectDinero(result.diffUnsplitted).toEqual(-1667);
+
+    result = calculateLogStatsBetweenTwoUsers(user1, user3, expenses, 0.5);
+
+    expectDinero(result.diffUnsplitted).toEqual(3333);
+  });
+
+  test("should return diffUnsplitted=3333 for user2, diffUnsplitted=3333 for user3", () => {
+    const user1 = "user1";
+    const user2 = "user2";
+    const user3 = "user3";
+    const expenses: ExpenseInput[] = [
+      {
+        version: 2,
+        expense: 10000,
+        user: user2,
+        paidBy: user2,
+        splittedWith: { [user1]: 0.5, [user2]: 0.5 },
+      },
+      {
+        version: 2,
+        expense: 5000,
+        user: user1,
+        paidBy: user1,
+        splittedWith: {
+          [user1]: 0,
+          [user2]: 1,
+        },
+      },
+      {
+        version: 2,
+        expense: 10000,
+        user: user1,
+        paidBy: user1,
+        splittedWith: {
+          [user1]: 0.3333333333333333,
+          [user2]: 0.3333333333333333,
+          [user3]: 0.3333333333333333,
+        },
+      },
+    ];
+
+    let result = calculateLogStatsBetweenTwoUsers(user1, user2, expenses, 0.5);
+
+    expectDinero(result.diffUnsplitted).toEqual(3333);
 
     result = calculateLogStatsBetweenTwoUsers(user1, user3, expenses, 0.5);
 
