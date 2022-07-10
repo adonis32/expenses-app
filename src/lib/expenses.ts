@@ -1,22 +1,32 @@
-import type { Expense } from "../context/expense";
+import type { ExpenseV1, ExpenseV2 } from "../context/expense";
 import Dinero from "dinero.js";
 
 export type ExpenseUser = string;
-export type ExpenseInput = Pick<Expense, "expense" | "user" | "version">;
+export type ExpenseInput =
+  | Pick<ExpenseV1, "expense" | "user" | "version">
+  | Pick<ExpenseV2, "expense" | "user" | "version" | "paidBy" | "splittedWith">;
 
 export function calculateLogStatsBetweenTwoUsers(
   userUid: ExpenseUser,
   otherUserUid: ExpenseUser,
-  expenses: ExpenseInput[]
+  expenses: ExpenseInput[],
+  v1Split: number
 ) {
   const groupedExpenses = expenses
-    .filter((expense) => [userUid, otherUserUid].includes(expense.user))
+    .filter((expense) =>
+      expense.version === 2
+        ? [userUid, otherUserUid].includes(expense.paidBy) &&
+          expense.splittedWith[userUid] &&
+          expense.splittedWith[otherUserUid]
+        : [userUid, otherUserUid].includes(expense.user)
+    )
     .reduce((prev, next) => {
-      const prevExpenses = prev[next.user] ?? [];
+      const user = next.version === 2 ? next.paidBy : next.user;
+      const prevExpenses = prev[user] ?? [];
 
       return {
         ...prev,
-        [next.user]: [...prevExpenses, next],
+        [user]: [...prevExpenses, next],
       };
     }, {} as Record<string, ExpenseInput[]>);
 
@@ -25,15 +35,20 @@ export function calculateLogStatsBetweenTwoUsers(
     [otherUserUid]: otherUserExpenses = [],
   } = groupedExpenses;
 
-  const userTotalSplitted = expensesTotal(userExpenses);
-  const otherUserTotalSplitted = expensesTotal(otherUserExpenses);
+  const userDebtWithOtherUser = getSplitTotal(
+    otherUserExpenses,
+    userUid,
+    v1Split
+  );
+  const otherUserDebtWithUser = getSplitTotal(
+    userExpenses,
+    otherUserUid,
+    v1Split
+  );
 
-  const diffSplitted = userTotalSplitted.subtract(otherUserTotalSplitted);
-  const diffUnsplitted = diffSplitted.divide(2);
+  const diffUnsplitted = otherUserDebtWithUser.subtract(userDebtWithOtherUser);
 
   return {
-    userTotalSplitted,
-    diffSplitted,
     diffUnsplitted,
   };
 }
@@ -42,22 +57,20 @@ type UserDiff = ReturnType<typeof calculateLogStatsBetweenTwoUsers>;
 
 export function calculateLogStatsOfUser(
   userUid: ExpenseUser,
-  otherUsers: ExpenseUser[],
+  listUsers: ExpenseUser[],
   expenses: ExpenseInput[]
 ) {
   const diffs: Record<string, UserDiff> = {};
+  const v1Split = 1 / new Set([userUid, ...listUsers]).size;
 
-  for (const otherUserUid of otherUsers.filter((uid) => uid !== userUid)) {
+  for (const otherUserUid of listUsers.filter((uid) => uid !== userUid)) {
     diffs[otherUserUid] = calculateLogStatsBetweenTwoUsers(
       userUid,
       otherUserUid,
-      expenses
+      expenses,
+      v1Split
     );
   }
-
-  const userTotalSplitted = expensesTotal(
-    expenses.filter((expense) => expense.user === userUid)
-  );
 
   const zero = Dinero({ amount: 0 });
 
@@ -70,28 +83,15 @@ export function calculateLogStatsOfUser(
     );
 
   const owedToUser = Object.values(diffs)
-    .filter((diff) => diff.diffSplitted.greaterThan(zero))
+    .filter((diff) => diff.diffUnsplitted.greaterThan(zero))
     .map((diff) => diff.diffUnsplitted)
     .reduce((prev, next) => prev.add(next), Dinero({ amount: 0 }));
 
   return {
-    userTotalSplitted,
     userOwes,
     owedToUser,
     diffs,
   };
-}
-
-function expensesTotal(expenses: Pick<ExpenseInput, "expense" | "version">[]) {
-  return expenses.reduce(
-    (prev, next) =>
-      prev.add(
-        Dinero({
-          amount: safeExpenseAmount(next),
-        })
-      ),
-    Dinero({ amount: 0 })
-  );
 }
 
 export function convertToCents(amount: number) {
@@ -106,4 +106,20 @@ export function safeExpenseAmount(
   return expense.version === 2
     ? expense.expense
     : convertToCents(expense.expense);
+}
+
+function getSplitTotal(expenses: ExpenseInput[], uid: string, v1Split: number) {
+  return expenses.reduce((prev, next) => {
+    let amount = Dinero({
+      amount: safeExpenseAmount(next),
+    });
+
+    if (!next.version) {
+      amount = amount.multiply(v1Split);
+    } else {
+      amount = amount.multiply(next.splittedWith[uid]);
+    }
+
+    return prev.add(amount);
+  }, Dinero({ amount: 0 }));
 }
