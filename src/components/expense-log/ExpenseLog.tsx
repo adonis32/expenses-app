@@ -169,7 +169,8 @@ function ExpenseList({ listId }: ExpenseListProps) {
         {expenses.map((expense, index) => {
           const date = new Date(expense.createdOn);
 
-          const itsMine = user.uid === expense.user;
+          const paidBy = expense.version === 2 ? expense.paidBy : expense.user;
+          const itsMine = user.uid === paidBy;
 
           return (
             <Flex
@@ -203,7 +204,7 @@ function ExpenseList({ listId }: ExpenseListProps) {
                   color={itsMine ? "blue.500" : "gray.500"}
                   fontWeight={itsMine ? "bold" : undefined}
                 >
-                  <ProfileName uid={expense.user} />
+                  <ProfileName uid={paidBy} />
                 </Text>
                 <Text as="span" fontSize="sm" color="gray.500">
                   {date.toLocaleDateString()} {date.toLocaleTimeString()}
