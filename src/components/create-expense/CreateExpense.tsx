@@ -8,9 +8,10 @@ import {
   Input,
   Spacer,
   useToast,
+  VStack,
 } from "@chakra-ui/react";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
-import { useListById } from "../../context/list";
+import { List, useListById } from "../../context/list";
 import { useAuth } from "../../context/auth";
 import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
 import { offlineAwait } from "../../lib/offline";
@@ -18,6 +19,11 @@ import CurrencyInput, { CurrencyInputProps } from "react-currency-input-field";
 import { convertToCents } from "../../lib/expenses";
 import { ExpenseV2 } from "../../context/expense";
 import LoadingScreen from "../loading-screen";
+import PercentageInputControl from "./PercentageInputControl";
+import ProfileAvatar from "../profile-avatar";
+import ProfileName from "../profile-name";
+import Dinero from "dinero.js";
+import DiffValue from "../diff-value";
 
 export interface CreateExpenseLocationState {
   name?: string;
@@ -26,14 +32,36 @@ export interface CreateExpenseLocationState {
   autoCreate?: boolean;
 }
 
-function CreateExpense() {
+function CreateExpenseScreen() {
   const match = useRouteMatch<{ listId: string }>();
   const { listId } = match.params;
+  const list = useListById(listId);
+
+  if (!list) {
+    return <LoadingScreen />;
+  }
+
+  return <CreateExpense list={list} />;
+}
+
+export default CreateExpenseScreen;
+
+interface CreateExpenseProps {
+  list: List;
+}
+
+function CreateExpense({ list }: CreateExpenseProps) {
   const history = useHistory();
   const { state = {} } = useLocation<CreateExpenseLocationState>();
-  const list = useListById(listId);
   const [name, setName] = useState(state.name ?? "");
-  const [expense, setExpense] = useState(state.amount ?? 1);
+  const [expense, setExpense] = useState(state.amount ?? 100);
+  const [paidFor, setPaidFor] = useState(
+    () =>
+      state.paidFor ??
+      Object.fromEntries(
+        list.users.map((user) => [user, 1 / list.users.length])
+      )
+  );
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
@@ -57,12 +85,6 @@ function CreateExpense() {
 
     setLoading(true);
 
-    const paidFor =
-      state.paidFor ||
-      Object.fromEntries(
-        list.users.map((user) => [user, 1 / list.users.length])
-      );
-
     const raw: Omit<ExpenseV2, "__ref"> = {
       name,
       expense,
@@ -79,7 +101,7 @@ function CreateExpense() {
     setLoading(false);
 
     history.goBack();
-  }, [name, expense, list, user, history, toast, state.paidFor]);
+  }, [name, expense, list, user, history, toast, paidFor]);
 
   const didAutoCreateRef = React.useRef(false);
 
@@ -89,6 +111,8 @@ function CreateExpense() {
       createExpense();
     }
   }, [state.autoCreate, createExpense]);
+
+  const changedStackRef = React.useRef<string[]>([]);
 
   if (state.autoCreate) {
     return <LoadingScreen />;
@@ -112,6 +136,23 @@ function CreateExpense() {
       setExpense(convertToCents(float));
     }
   };
+
+  function onPaidForChange(userId: string, value: number) {
+    changedStackRef.current = changedStackRef.current.filter(
+      (id) => id !== userId
+    );
+    changedStackRef.current.push(userId);
+
+    setPaidFor((paidFor) => {
+      return adjustPaidFor(
+        {
+          ...paidFor,
+          [userId]: value,
+        },
+        changedStackRef.current
+      );
+    });
+  }
 
   return (
     <div>
@@ -177,9 +218,114 @@ function CreateExpense() {
           placeholder="Expense name"
           isRequired={true}
         />
+
+        <Spacer h={4} />
+
+        <Text as="label" fontWeight="bold">
+          Share expense with
+        </Text>
+
+        <Spacer h={6} />
+
+        <VStack spacing={6}>
+          {Object.entries(paidFor).map(([userId, percentage]) => {
+            const amountInCurrency = Dinero({
+              amount: expense,
+              currency: "EUR",
+            })
+              .multiply(percentage)
+              .setLocale("es-ES");
+
+            return (
+              <Box
+                key={userId}
+                p={4}
+                bgColor="white"
+                rounded="xl"
+                boxShadow="lg"
+                width="full"
+              >
+                <Flex alignItems="center" mb={4}>
+                  <ProfileAvatar uid={userId} size="sm" />
+
+                  <Text ml="3" lineHeight="16px" fontSize="16px">
+                    <ProfileName uid={userId} />
+                  </Text>
+
+                  <DiffValue
+                    ml="auto"
+                    positiveColor="brand.500"
+                    diff={amountInCurrency}
+                  />
+                </Flex>
+                <PercentageInputControl
+                  value={percentage}
+                  onChange={(value) => {
+                    onPaidForChange(userId, value);
+                  }}
+                  valueLabel={amountInCurrency.toFormat("$0.00")}
+                />
+              </Box>
+            );
+          })}
+        </VStack>
+
+        <Spacer h={6} />
       </Box>
     </div>
   );
 }
 
-export default CreateExpense;
+function adjustPaidFor(paidFor: Record<string, number>, adjustList: string[]) {
+  const total = Object.values(paidFor).reduce((a, b) => a + b, 0);
+
+  if (total === 1) {
+    return paidFor;
+  }
+
+  let diff = 1 - total;
+  const keys = Object.keys(paidFor).filter((key) => !adjustList.includes(key));
+  adjustList = [...keys, ...adjustList];
+
+  const newPaidFor = { ...paidFor };
+
+  for (const key of adjustList) {
+    const value = newPaidFor[key];
+    const newValue = value + diff;
+    newPaidFor[key] = newValue;
+
+    if (newValue < 0) {
+      diff = newValue;
+      newPaidFor[key] = 0;
+    }
+
+    if (newValue > 1) {
+      diff = newValue - 1;
+      newPaidFor[key] = 1;
+    }
+
+    if (newValue > 0 && newValue <= 1) {
+      diff = 0;
+    }
+
+    if (diff === 0) {
+      break;
+    }
+  }
+
+  const oneHundred = Dinero({ amount: 100 });
+
+  for (const [key, value] of Object.entries(newPaidFor)) {
+    const amount = oneHundred.multiply(value);
+
+    if (amount.equalsTo(oneHundred)) {
+      newPaidFor[key] = 1;
+    } else {
+      newPaidFor[key] = Number(
+        "0." + amount.getAmount().toString().padStart(2, "0")
+      );
+    }
+  }
+
+  return newPaidFor;
+}
