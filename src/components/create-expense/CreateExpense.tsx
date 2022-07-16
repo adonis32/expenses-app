@@ -58,8 +58,14 @@ function CreateExpense({ list }: CreateExpenseProps) {
   const [paidFor, setPaidFor] = useState(
     () =>
       state.paidFor ??
-      Object.fromEntries(
-        list.users.map((user) => [user, 1 / list.users.length])
+      adjustPaidFor(
+        Object.fromEntries(
+          list.users.map((user) => [
+            user,
+            Number(Number(1 / list.users.length).toFixed(2)),
+          ])
+        ),
+        []
       )
   );
   const { user } = useAuth();
